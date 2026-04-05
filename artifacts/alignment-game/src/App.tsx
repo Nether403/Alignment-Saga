@@ -6,17 +6,38 @@ import { getScene, getAct2HubScenes, canProceedToRevelation } from './engine/sce
 import type { Role } from './types/game';
 
 import { TitleScreen } from './components/TitleScreen';
+import { StoryBriefingScreen } from './components/StoryBriefingScreen';
 import { RoleSelectScreen } from './components/RoleSelectScreen';
+import { HowToPlayScreen } from './components/HowToPlayScreen';
 import { GameScene } from './components/GameScene';
 import { HUD } from './components/HUD';
 import { ConsequenceModal } from './components/ConsequenceModal';
 import { PanelOverlay } from './components/PanelOverlay';
 import { Act2Hub } from './components/Act2Hub';
 import { EndingScreen } from './components/EndingScreen';
+import { TutorialOverlay, shouldShowTutorial } from './components/TutorialOverlay';
 
 const SAVE_KEY = 'alignment_game_save_v2';
 
-type UIPhase = 'title' | 'role_select' | 'playing' | 'consequence' | 'ending';
+type UIPhase =
+  | 'title'
+  | 'how_to_play'
+  | 'story_briefing'
+  | 'role_select'
+  | 'playing'
+  | 'consequence'
+  | 'ending';
+
+function hasSaveGame(): boolean {
+  try {
+    const saved = localStorage.getItem(SAVE_KEY);
+    if (!saved) return false;
+    const parsed: GameState = JSON.parse(saved);
+    return !!(parsed?.role && parsed.phase !== 'summary');
+  } catch {
+    return false;
+  }
+}
 
 export default function App() {
   const [uiPhase, setUiPhase] = useState<UIPhase>('title');
@@ -24,7 +45,8 @@ export default function App() {
   const [openPanel, setOpenPanel] = useState<'journal' | 'evidence' | 'alerts' | null>(null);
   const [act2DirectScene, setAct2DirectScene] = useState<string | null>(null);
   const [skipAnim, setSkipAnim] = useState(false);
-
+  const [showTutorial, setShowTutorial] = useState(false);
+  const [saveExists, setSaveExists] = useState(hasSaveGame);
 
   // Persist state
   useEffect(() => {
@@ -40,13 +62,13 @@ export default function App() {
   }, []);
 
   const handleStart = useCallback(() => {
-    // Check for existing save
     try {
       const saved = localStorage.getItem(SAVE_KEY);
       if (saved) {
         const parsed: GameState = JSON.parse(saved);
         if (parsed?.role && parsed.phase !== 'summary') {
           setGameState(parsed);
+          setSaveExists(true);
           if (parsed.phase === 'ending') {
             setUiPhase('ending');
           } else {
@@ -56,13 +78,26 @@ export default function App() {
         }
       }
     } catch {}
-    setUiPhase('role_select');
+    // New game — go to story briefing first
+    setUiPhase('story_briefing');
+  }, []);
+
+  const handleNewGame = useCallback(() => {
+    try { localStorage.removeItem(SAVE_KEY); } catch {}
+    setSaveExists(false);
+    setGameState(null);
+    setAct2DirectScene(null);
+    setSkipAnim(false);
+    setUiPhase('story_briefing');
   }, []);
 
   const handleRoleSelect = useCallback((role: Role) => {
     const initialState = createInitialState(role);
     setGameState(initialState);
     setAct2DirectScene(null);
+    // Show tutorial only for first-time players
+    const firstRun = shouldShowTutorial();
+    setShowTutorial(firstRun);
     setUiPhase('playing');
   }, []);
 
@@ -100,9 +135,11 @@ export default function App() {
 
   const handleRestart = useCallback(() => {
     localStorage.removeItem(SAVE_KEY);
+    setSaveExists(false);
     setGameState(null);
     setAct2DirectScene(null);
     setSkipAnim(false);
+    setShowTutorial(false);
     setUiPhase('title');
   }, []);
 
@@ -110,7 +147,6 @@ export default function App() {
   const currentSceneId = gameState?.currentSceneId;
   const isAct2Hub = currentSceneId === 'A2_HUB' || currentSceneId === 'A2_S19_READY';
 
-  // Which scene to show: act2 direct > current
   const displaySceneId = act2DirectScene || currentSceneId;
   const currentScene = displaySceneId && !isAct2Hub
     ? getScene(displaySceneId)
@@ -133,7 +169,27 @@ export default function App() {
   if (uiPhase === 'title') {
     return (
       <div className="w-screen h-screen bg-stone-950 overflow-hidden">
-        <TitleScreen onStart={handleStart} />
+        <TitleScreen
+          onStart={handleStart}
+          onHowToPlay={() => setUiPhase('how_to_play')}
+          hasSave={saveExists}
+        />
+      </div>
+    );
+  }
+
+  if (uiPhase === 'how_to_play') {
+    return (
+      <div className="w-screen h-screen bg-stone-950 overflow-hidden">
+        <HowToPlayScreen onBack={() => setUiPhase('title')} />
+      </div>
+    );
+  }
+
+  if (uiPhase === 'story_briefing') {
+    return (
+      <div className="w-screen h-screen bg-stone-950 overflow-hidden">
+        <StoryBriefingScreen onContinue={() => setUiPhase('role_select')} />
       </div>
     );
   }
@@ -172,7 +228,7 @@ export default function App() {
         onAlertsClick={() => setOpenPanel('alerts')}
       />
 
-      {/* Main area — pb-16 on mobile for fixed bottom HUD bar */}
+      {/* Main area */}
       <main className="flex-1 flex flex-col min-h-0 overflow-hidden relative pb-16 md:pb-0">
         {/* Consequence modal */}
         {uiPhase === 'consequence' && gameState.lastConsequenceText && (
@@ -254,6 +310,11 @@ export default function App() {
               </button>
             </div>
           </div>
+        )}
+
+        {/* Tutorial overlay — only on first run */}
+        {showTutorial && uiPhase === 'playing' && (
+          <TutorialOverlay onComplete={() => setShowTutorial(false)} />
         )}
       </main>
 
