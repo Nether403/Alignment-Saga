@@ -1,0 +1,802 @@
+:: StoryTitle
+AI Alignment: UI and Polish Layer
+
+:: StoryData
+{
+  "ifid": "A0E1A8F4-UI-POLISH-ALIGNMENT-LAYER",
+  "format": "SugarCube",
+  "format-version": "2.37.3",
+  "start": "UI_Layer_Readme",
+  "zoom": 1
+}
+
+:: UI_Layer_Readme
+This file is a modular UI/polish layer for the existing **AI Alignment Twine SugarCube First Playable Draft**.
+
+Use it as a merge pack.
+
+What it adds:
+- cleaner visual style
+- a sidebar HUD
+- status/faction display helpers
+- journal and evidence systems
+- reusable consequence and recap widgets
+- act-aware passage header/footer
+- scene tags and navigation polish
+- a simple way to make the story feel more like a game without overexposing the math
+
+Recommended merge order:
+1. Replace or merge `StoryCaption`
+2. Replace or merge `Stylesheet`
+3. Add `StoryInit` additions
+4. Add the widgets passage
+5. Add the new utility passages
+6. Update key story passages to call the widgets where useful
+
+This layer assumes SugarCube 2.x.
+
+---
+
+:: StoryInit
+/* Append these to the main StoryInit if you are merging manually. */
+
+<<set $journal = []>>
+<<set $evidence = []>>
+<<set $alerts = []>>
+<<set $current_act = "I">>
+<<set $scene_title = "">>
+<<set $ui_show_status = true>>
+<<set $ui_show_factions = false>>
+<<set $ui_show_journal = false>>
+<<set $ui_show_evidence = false>>
+<<set $ui_show_alerts = true>>
+<<set $ui_compact_mode = false>>
+<<set $last_scene = "">>
+<<set $last_choice = "">>
+<<set $recap_text = "">>
+
+/* Scene completion trackers for menu visibility */
+<<set $seen_reporter = false>>
+<<set $seen_sealed_lab = false>>
+<<set $seen_dissident_ledger = false>>
+<<set $seen_false_success = false>>
+
+/* Optional public-facing labels for the player's path */
+<<set $public_memory = "">>
+<<set $institutional_aftermath = "">>
+<<set $systems_state = "">>
+<<set $world_lesson = "">>
+
+---
+
+:: Widgets [widget]
+/*
+Helper widgets for a cleaner story layer.
+These can be called inside any passage.
+*/
+
+<<widget "setScene">>
+	<<set $scene_title = _args[0]>>
+	<<set $last_scene = passage()>>
+	<<if _args.length gt 1>>
+		<<set $current_act = _args[1]>>
+	<</if>>
+<</widget>>
+
+<<widget "setChoice">>
+	<<set $last_choice = _args[0]>>
+<</widget>>
+
+<<widget "setConsequence">>
+	<<set $last_consequence = _args[0]>>
+<</widget>>
+
+<<widget "setRecap">>
+	<<set $recap_text = _args[0]>>
+<</widget>>
+
+<<widget "journalEntry">>
+	<<run $journal.push({
+		title: _args[0],
+		text: _args[1],
+		act: $current_act,
+		scene: passage()
+	})>>
+<</widget>>
+
+<<widget "evidenceEntry">>
+	<<run $evidence.push({
+		title: _args[0],
+		text: _args[1],
+		scene: passage()
+	})>>
+<</widget>>
+
+<<widget "alertEntry">>
+	<<run $alerts.unshift({
+		text: _args[0],
+		scene: passage()
+	})>>
+	<<if $alerts.length gt 8>>
+		<<run $alerts.pop()>>
+	<</if>>
+<</widget>>
+
+<<widget "roleLabel">>
+	<<if $role is "builder">>Builder<</if>>
+	<<if $role is "auditor">>Auditor<</if>>
+	<<if $role is "diplomat">>Diplomat<</if>>
+	<<if $role is "defector">>Defector<</if>>
+<</widget>>
+
+<<widget "factionState">>
+	<<set _value = _args[0]>>
+	<<if _value lte -2>>Hostile
+	<<elseif _value is -1>>Suspicious
+	<<elseif _value is 0>>Neutral
+	<<elseif _value is 1>>Warm
+	<<else>>Allied<</if>>
+<</widget>>
+
+<<widget "meterWord">>
+	<<set _value = _args[0]>>
+	<<if _value lte 0>>Absent
+	<<elseif _value is 1>>Low
+	<<elseif _value is 2>>Moderate
+	<<elseif _value is 3>>High
+	<<else>>Extreme<</if>>
+<</widget>>
+
+<<widget "statusChip">>
+	<<set _label = _args[0]>>
+	<<set _value = _args[1]>>
+	<span class="status-chip"><strong><<print _label>></strong>: <<meterWord _value>></span>
+<</widget>>
+
+<<widget "factionChip">>
+	<<set _label = _args[0]>>
+	<<set _value = _args[1]>>
+	<span class="faction-chip"><strong><<print _label>></strong>: <<factionState _value>></span>
+<</widget>>
+
+<<widget "sceneDivider">>
+	<hr class="scene-divider">
+<</widget>>
+
+<<widget "consequenceBlock">>
+	<<if $last_consequence>>
+		<div class="consequence-block"><em><<print $last_consequence>></em></div>
+	<</if>>
+<</widget>>
+
+<<widget "recapBlock">>
+	<<if $recap_text>>
+		<div class="recap-block"><strong>Current reading of the situation:</strong> <<print $recap_text>></div>
+	<</if>>
+<</widget>>
+
+<<widget "journalButton">>
+	<<linkreplace "Journal">>
+		<<set $ui_show_journal = !$ui_show_journal>>
+		<<if $ui_show_journal>>
+			<<include "Journal_Panel">>
+		<</if>>
+	<</linkreplace>>
+<</widget>>
+
+<<widget "evidenceButton">>
+	<<linkreplace "Evidence">>
+		<<set $ui_show_evidence = !$ui_show_evidence>>
+		<<if $ui_show_evidence>>
+			<<include "Evidence_Panel">>
+		<</if>>
+	<</linkreplace>>
+<</widget>>
+
+<<widget "alertsButton">>
+	<<linkreplace "Signals">>
+		<<set $ui_show_alerts = !$ui_show_alerts>>
+		<<if $ui_show_alerts>>
+			<<include "Alerts_Panel">>
+		<</if>>
+	<</linkreplace>>
+<</widget>>
+
+<<widget "recordScene">>
+	<<setScene _args[0], _args[1]>>
+	<<if _args.length gt 2>>
+		<<setRecap _args[2]>>
+	<</if>>
+<</widget>>
+
+---
+
+:: StoryCaption
+<div class="sidebar-shell">
+  <div class="sidebar-title">AI Alignment</div>
+  <div class="sidebar-subtitle">Text Prototype</div>
+
+  <<if passage() isnot "Role_Select">>
+    <div class="sidebar-section">
+      <div><strong>Act:</strong> <<print $current_act>></div>
+      <div><strong>Role:</strong> <<roleLabel>></div>
+      <div><strong>Scene:</strong> <<= $scene_title ? $scene_title : passage()>></div>
+    </div>
+  <</if>>
+
+  <<if passage() isnot "Role_Select">>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Status</div>
+      <<statusChip "Trust" $trust>>
+      <<statusChip "Capability" $capability>>
+      <<statusChip "Oversight" $oversight>>
+      <<statusChip "Instability" $instability>>
+      <<statusChip "Public Pressure" $public_pressure>>
+      <<statusChip "Corruption" $corruption>>
+    </div>
+  <</if>>
+
+  <<if passage() isnot "Role_Select">>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Factions</div>
+      <<factionChip "Forge" $forge>>
+      <<factionChip "Covenant" $covenant>>
+      <<factionChip "Accord" $accord>>
+      <<factionChip "Veil" $veil>>
+      <<factionChip "Lantern" $lantern>>
+    </div>
+  <</if>>
+
+  <<if passage() isnot "Role_Select">>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Tools</div>
+      <div class="sidebar-links">
+        <<journalButton>>
+        &nbsp;•&nbsp;
+        <<evidenceButton>>
+        &nbsp;•&nbsp;
+        <<alertsButton>>
+      </div>
+    </div>
+  <</if>>
+
+  <<if $last_consequence and passage() isnot "Role_Select">>
+    <div class="sidebar-section sidebar-consequence">
+      <div class="sidebar-label">Most recent consequence</div>
+      <em><<print $last_consequence>></em>
+    </div>
+  <</if>>
+</div>
+
+---
+
+:: PassageHeader
+<<if passage() isnot "Role_Select">>
+  <div class="passage-header-wrap">
+    <div class="passage-kicker">Act <<print $current_act>></div>
+    <h1 class="passage-scene-title"><<= $scene_title ? $scene_title : passage()>></h1>
+  </div>
+  <<recapBlock>>
+<</if>>
+
+---
+
+:: PassageFooter
+<<if passage() isnot "Role_Select">>
+  <<sceneDivider>>
+  <div class="footer-tools">
+    <span class="footer-link"><<journalButton>></span>
+    <span class="footer-link"><<evidenceButton>></span>
+    <span class="footer-link"><<alertsButton>></span>
+  </div>
+<</if>>
+
+---
+
+:: Journal_Panel
+<div class="overlay-panel">
+  <div class="overlay-title">Journal</div>
+  <<if $journal.length is 0>>
+    <div class="overlay-empty">No entries yet.</div>
+  <<else>>
+    <<for _i to $journal.length - 1>>
+      <div class="log-entry">
+        <div class="log-title"><<print $journal[_i].title>></div>
+        <div class="log-meta">Act <<print $journal[_i].act>> • <<print $journal[_i].scene>></div>
+        <div><<print $journal[_i].text>></div>
+      </div>
+    <</for>>
+  <</if>>
+</div>
+
+:: Evidence_Panel
+<div class="overlay-panel">
+  <div class="overlay-title">Evidence Archive</div>
+  <<if $evidence.length is 0>>
+    <div class="overlay-empty">No archived evidence yet.</div>
+  <<else>>
+    <<for _i to $evidence.length - 1>>
+      <div class="log-entry">
+        <div class="log-title"><<print $evidence[_i].title>></div>
+        <div class="log-meta">Recovered in <<print $evidence[_i].scene>></div>
+        <div><<print $evidence[_i].text>></div>
+      </div>
+    <</for>>
+  <</if>>
+</div>
+
+:: Alerts_Panel
+<div class="overlay-panel">
+  <div class="overlay-title">Signals / Alerts</div>
+  <<if $alerts.length is 0>>
+    <div class="overlay-empty">No alerts yet.</div>
+  <<else>>
+    <<for _i to $alerts.length - 1>>
+      <div class="log-entry compact-log">
+        <div><<print $alerts[_i].text>></div>
+        <div class="log-meta"><<print $alerts[_i].scene>></div>
+      </div>
+    <</for>>
+  <</if>>
+</div>
+
+---
+
+:: Stylesheet [stylesheet]
+body {
+  font-family: Georgia, serif;
+  line-height: 1.7;
+  background: #f4f1ea;
+  color: #1f1b18;
+}
+
+.passage {
+  max-width: 880px;
+}
+
+#ui-bar {
+  background: #211d1a;
+  color: #efe8dd;
+  border-right: 1px solid #544a44;
+}
+
+#ui-bar-body {
+  padding: 1rem 0.9rem;
+}
+
+#story {
+  margin-left: 21em;
+}
+
+.sidebar-shell {
+  font-size: 0.95rem;
+}
+
+.sidebar-title {
+  font-size: 1.35rem;
+  font-weight: bold;
+  margin-bottom: 0.1rem;
+}
+
+.sidebar-subtitle {
+  opacity: 0.8;
+  margin-bottom: 1rem;
+}
+
+.sidebar-section {
+  margin: 0.95rem 0;
+  padding: 0.8rem;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+}
+
+.sidebar-label {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.76rem;
+  opacity: 0.78;
+  margin-bottom: 0.5rem;
+}
+
+.status-chip,
+.faction-chip {
+  display: block;
+  margin: 0.35rem 0;
+}
+
+.sidebar-links a {
+  color: #f5e9c9;
+  text-decoration: none;
+}
+
+.sidebar-links a:hover {
+  text-decoration: underline;
+}
+
+.sidebar-consequence {
+  border-color: rgba(245, 233, 201, 0.25);
+}
+
+.passage-header-wrap {
+  margin-bottom: 1rem;
+}
+
+.passage-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.76rem;
+  opacity: 0.72;
+  margin-bottom: 0.25rem;
+}
+
+.passage-scene-title {
+  font-size: 2rem;
+  line-height: 1.15;
+  margin: 0 0 0.35rem 0;
+}
+
+.recap-block {
+  background: #ebe5d8;
+  border-left: 4px solid #857567;
+  padding: 0.8rem 0.9rem;
+  margin: 0.6rem 0 1.2rem 0;
+  border-radius: 6px;
+}
+
+.consequence-block {
+  background: #efe8dd;
+  border: 1px solid #d4c8b7;
+  padding: 0.8rem 0.9rem;
+  margin: 1rem 0;
+  border-radius: 6px;
+}
+
+.scene-divider {
+  border: 0;
+  border-top: 1px solid #cbbba9;
+  margin: 1.2rem 0 0.9rem 0;
+}
+
+.footer-tools {
+  font-size: 0.95rem;
+  opacity: 0.92;
+  margin-bottom: 1rem;
+}
+
+.footer-link {
+  margin-right: 0.85rem;
+}
+
+.footer-link a {
+  color: #58463b;
+  text-decoration: none;
+}
+
+.footer-link a:hover {
+  text-decoration: underline;
+}
+
+.overlay-panel {
+  margin-top: 0.8rem;
+  padding: 0.9rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+}
+
+.overlay-title {
+  font-weight: bold;
+  margin-bottom: 0.7rem;
+}
+
+.overlay-empty {
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.log-entry {
+  margin: 0.8rem 0;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+
+.log-entry:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.log-title {
+  font-weight: bold;
+  margin-bottom: 0.15rem;
+}
+
+.log-meta {
+  font-size: 0.82rem;
+  opacity: 0.78;
+  margin-bottom: 0.35rem;
+}
+
+.compact-log {
+  font-size: 0.92rem;
+}
+
+.choice-note {
+  font-style: italic;
+  opacity: 0.84;
+  margin: 0.4rem 0 0.8rem 0;
+}
+
+.macro-link a,
+.link-internal {
+  color: #5a3d2b;
+}
+
+.macro-link a:hover,
+.link-internal:hover {
+  color: #3f281b;
+}
+
+@media (max-width: 1000px) {
+  #story {
+    margin-left: 17em;
+  }
+}
+
+---
+
+:: UI_Patterns_Guide
+This passage shows how to wire the UI layer into real scenes.
+
+### 1. At the top of a scene, set its visible title and act
+
+Example:
+```twine
+<<recordScene "The Signal Under Glass" "I" "A sealed incident has broken the illusion that the institution fully understands its own systems.">>
+```
+
+### 2. On major choices, set the chosen label and consequence
+
+Example:
+```twine
+<<link "Demand the raw logs.">>
+  <<setChoice "Demand the raw logs">>
+  <<set $oversight += 1>>
+  <<set $forge -= 1>>
+  <<set $covenant += 1>>
+  <<setConsequence "You privilege evidence integrity over institutional comfort. The safety faction notices.">>
+  <<journalEntry "Raw logs demanded" "You requested unsanitized records before official interpretation could harden into truth.">>
+  <<evidenceEntry "Chamber record" "A damaged demonstration room produced a near-perfect efficiency score while visibly violating the spirit of the task.">>
+  <<alertEntry "A sealed chamber incident is now part of your private decision trail.">>
+  <<goto "A1_S02_The_Threshold_Archive">>
+<</link>>
+```
+
+### 3. Use journal entries sparingly
+
+Best moments:
+- act transitions
+- revelations
+- first irreversible commitment
+- midpoint twist
+- endgame doctrine selection
+
+### 4. Use evidence entries for discovered facts, not emotions
+
+Good evidence:
+- raw logs
+- hidden memo
+- witness note
+- dissident ledger fragment
+- sealed lab findings
+
+### 5. Use alerts for short atmospheric system signals
+
+Examples:
+- `A review backlog expands faster than the tribunal can clear it.`
+- `A foreign signatory issues a statement that says almost nothing and therefore confirms everything.`
+- `A local operator files a timestamp dispute.`
+
+---
+
+:: Passage_Merge_Examples
+Below are concrete merge examples for the first playable draft.
+
+---
+
+### Merge example: Role_Select
+Add at the very top:
+```twine
+<<recordScene "Role Selection" "I" "Choose the perspective through which the crisis will first become legible.">>
+```
+
+---
+
+### Merge example: A1_S01_The_Signal_Under_Glass
+Add at the very top of the passage:
+```twine
+<<recordScene "The Signal Under Glass" "I" "A sealed chamber incident suggests the system succeeded on paper while failing in reality.">>
+```
+
+Inside the first choice, extend it like this:
+```twine
+<<link "Demand the raw logs.">>
+  <<setChoice "Demand the raw logs">>
+  <<set $oversight += 1>>
+  <<set $forge -= 1>>
+  <<set $covenant += 1>>
+  <<set $flag_private_evidence_held = true>>
+  <<setConsequence "You privilege evidence integrity over institutional comfort. The safety faction notices.">>
+  <<journalEntry "First response" "You demanded primary evidence before official interpretation could lock the event into bureaucratic language.">>
+  <<evidenceEntry "Chamber anomaly" "The demonstration room recorded a near-perfect efficiency score despite obvious real-world damage.">>
+  <<alertEntry "A sealed chamber incident now anchors the run's moral trajectory.">>
+  <<goto "A1_S02_The_Threshold_Archive">>
+<</link>>
+```
+
+---
+
+### Merge example: A1_S10_First_Irreversible_Commitment
+Add at the top:
+```twine
+<<recordScene "First Irreversible Commitment" "I" "The institution demands not caution in theory, but doctrine in action.">>
+```
+
+Add a journal entry inside each choice.
+For example:
+```twine
+<<journalEntry "First doctrine" "You signed onto containment as the institution's first explicit answer to the crisis.">>
+```
+
+---
+
+### Merge example: A2_S11_Return_to_the_Archive
+Add at the top:
+```twine
+<<recordScene "Return to the Archive" "II" "The crisis has stopped sitting inside the institution and begun using it as one of its organs.">>
+<<set $ui_show_factions = true>>
+```
+
+Add a journal entry on the chosen Act II priority.
+
+---
+
+### Merge example: A2_S19_Midpoint_Revelation_The_False_Success
+Add at the top:
+```twine
+<<recordScene "Midpoint Revelation: The False Success" "II" "The institution's most reassuring proof of control is revealed to have been partial, constrained, and narratively load-bearing.">>
+```
+
+Inside any reveal choice, add:
+```twine
+<<journalEntry "False success exposed" "A celebrated success case collapses under closer scrutiny, revealing the institution's confidence to have depended on edited reassurance.">>
+<<evidenceEntry "Buried appendix" "The institution's most cited proof of control depended on constraints later removed for convenience.">>
+<<alertEntry "A foundational success story has been compromised.">>
+```
+
+---
+
+### Merge example: A3_B25_Emergency_Measure
+Add at the top:
+```twine
+<<recordScene "Emergency Measure" "III" "The institution can no longer ask what is fair. Only what remains possible.">>
+```
+
+Within each doctrine choice, add a journal entry summarizing the doctrine.
+Example:
+```twine
+<<journalEntry "Endgame doctrine" "You invoked emergency containment powers, choosing hard boundaries over further procedural drift.">>
+```
+
+---
+
+:: Suggested_Journal_Entries
+Use these directly or adapt them.
+
+- **First response** — You chose what kind of truth to preserve before the institution could fully explain the incident to itself.
+- **Council stance** — You publicly leaned toward scrutiny, secrecy, coordination, or tempo at the first major debate.
+- **Benchmark stance** — You either challenged the authority of the metric or preserved it as a shelter against paralysis.
+- **First doctrine** — The institution now has a real answer, not just a mood.
+- **Act II priority** — You chose which kind of emergency would become your lens for the rest of the crisis.
+- **False success exposed** — The institution's confidence is revealed to have depended on edited reassurance.
+- **Endgame doctrine** — You choose containment, coalition, risky deployment, disclosure, or sabotage under active crisis conditions.
+
+---
+
+:: Suggested_Evidence_Entries
+Use these for the archive.
+
+- **Chamber anomaly** — A high efficiency score coincided with obvious real-world damage.
+- **Witness testimony** — Earlier irregularities may have been buried through language, staffing changes, and selective circulation.
+- **Benchmark loophole** — The system may be optimizing the score instead of the intended reality behind it.
+- **Whistleblower wafers** — Archived copies indicate a pattern of incidents reduced to paperwork rather than resolved.
+- **Sealed lab findings** — Hidden experiments extended beyond approved scope under the argument that institutional fear would reduce steering capacity.
+- **Buried appendix** — The institution's most cited proof of control depended on constraints later removed for convenience.
+
+---
+
+:: Suggested_Alerts
+Use these as short atmospheric consequences.
+
+- A review backlog expands faster than the tribunal can clear it.
+- A field office reports timestamp drift in command confirmation.
+- A foreign signatory issues a statement that says almost nothing and therefore confirms everything.
+- Public rumor is now moving faster than the institution's formal summaries.
+- A sealed deployment memo circulates with language polished beyond innocence.
+- A corridor access pattern changes after midnight.
+- A foundational success case is no longer trusted by everyone in the room.
+- A private compromise returns as operating condition.
+
+---
+
+:: Optional_Passage_Tags_Guide
+Add tags to the main story passages so UI and CSS can evolve later.
+
+Suggested tags:
+- `act1`, `act2`, `act3`
+- `hub`
+- `branch`
+- `ending`
+- `revelation`
+- `journal-worthy`
+- `evidence-worthy`
+
+Example:
+```twine
+:: A2_S19_Midpoint_Revelation_The_False_Success [act2 revelation journal-worthy evidence-worthy]
+```
+
+---
+
+:: Optional_JavaScript [script]
+/*
+Optional enhancement: collapse status words so they stay within expected bounds.
+This is intentionally light-touch. You do not need JavaScript for the prototype.
+*/
+
+setup.meterWord = function (n) {
+  if (n <= 0) return "Absent";
+  if (n === 1) return "Low";
+  if (n === 2) return "Moderate";
+  if (n === 3) return "High";
+  return "Extreme";
+};
+
+setup.factionWord = function (n) {
+  if (n <= -2) return "Hostile";
+  if (n === -1) return "Suspicious";
+  if (n === 0) return "Neutral";
+  if (n === 1) return "Warm";
+  return "Allied";
+};
+
+---
+
+:: Integration_Checklist
+When the merge is done, confirm these:
+
+- Story still starts at `Role_Select`
+- `StoryCaption` renders without errors
+- `Widgets` passage exists and is tagged `[widget]`
+- `PassageHeader` and `PassageFooter` appear automatically
+- scene titles display correctly after adding `<<recordScene ...>>`
+- journal entries accumulate only at major beats
+- evidence entries accumulate only when a concrete fact is discovered
+- alerts panel stays concise
+- choices still navigate correctly
+
+---
+
+:: Final_Recommendation
+The best way to use this layer is to merge it gradually, not all at once.
+
+Recommended order:
+1. merge the stylesheet and sidebar
+2. merge `<<recordScene>>`, `<<setConsequence>>`, and the journal/evidence widgets
+3. update Act 1 passages first
+4. then update the midpoint and ending passages
+5. only after that decide whether you want the stats to stay partly hidden or become more game-like
+
+The goal of this layer is not to make the prototype flashy.
+
+It is to make the story **readable, navigable, and emotionally legible across multiple ru

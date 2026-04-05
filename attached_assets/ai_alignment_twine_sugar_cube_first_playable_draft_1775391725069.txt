@@ -1,0 +1,1628 @@
+:: StoryTitle
+AI Alignment: First Playable
+
+:: StoryData
+{
+  "ifid": "7F6D4B77-6A7E-4E89-A7D8-ALIGNMENT-PLAYABLE",
+  "format": "SugarCube",
+  "format-version": "2.37.3",
+  "start": "Role_Select",
+  "zoom": 1
+}
+
+:: StoryInit
+<<set $role = "">>
+<<set $trust = 2>>
+<<set $capability = 1>>
+<<set $oversight = 2>>
+<<set $instability = 1>>
+<<set $public_pressure = 0>>
+<<set $corruption = 0>>
+
+<<set $forge = 0>>
+<<set $covenant = 0>>
+<<set $accord = 0>>
+<<set $veil = 0>>
+<<set $lantern = 0>>
+
+<<set $act2_core_branches_complete = 0>>
+<<set $act2_optional_branches_complete = 0>>
+<<set $ally_count = 0>>
+
+<<set $flag_private_evidence_held = false>>
+<<set $flag_spec_gaming_suspected = false>>
+<<set $flag_witness_network_exists = false>>
+<<set $flag_metric_disputed = false>>
+<<set $flag_metric_preserved = false>>
+<<set $flag_whistleblower_protected = false>>
+<<set $flag_anomaly_buried = false>>
+<<set $flag_containment_path = false>>
+<<set $flag_limited_development_path = false>>
+<<set $flag_covert_handling_path = false>>
+<<set $flag_broad_review_path = false>>
+<<set $flag_automated_oversight = false>>
+<<set $flag_forged_audit = false>>
+<<set $flag_rival_contact = false>>
+<<set $flag_treaty_compromised = false>>
+<<set $flag_false_success_revealed = false>>
+<<set $flag_false_success_suppressed = false>>
+<<set $flag_secret_deployment = false>>
+<<set $flag_public_leak_occurred = false>>
+<<set $flag_emergency_powers_used = false>>
+<<set $flag_last_minute_coalition = false>>
+<<set $flag_autonomy_allowed = false>>
+<<set $flag_final_sabotage = false>>
+
+<<set $first_major_doctrine = "">>
+<<set $first_hidden_compromise = "">>
+<<set $benchmark_stance = "">>
+<<set $assembly_priority = "">>
+<<set $endgame_doctrine = "">>
+<<set $last_consequence = "">>
+
+:: StoryCaption
+<div class="hud-block">
+  <div><strong>Act:</strong> <<= tags().includes("act1") ? "I" : tags().includes("act2") ? "II" : tags().includes("act3") ? "III" : "—">></div>
+  <<if passage() is not "Role_Select">>
+    <div><strong>Role:</strong> <<= $role ? $role : "unassigned">></div>
+  <</if>>
+  <<if passage() isnot "Role_Select">>
+    <div><strong>Doctrine:</strong> <<= $first_major_doctrine ? $first_major_doctrine.replace(/_/g, " ") : "forming">></div>
+  <</if>>
+  <<if $last_consequence>>
+    <hr>
+    <div><em><<print $last_consequence>></em></div>
+  <</if>>
+</div>
+
+:: Stylesheet [stylesheet]
+body {
+  font-family: Georgia, serif;
+  line-height: 1.6;
+}
+
+.passage {
+  max-width: 850px;
+}
+
+.hud-block {
+  font-size: 0.92rem;
+}
+
+.passage hr {
+  margin: 1rem 0;
+}
+
+.choice-note {
+  font-style: italic;
+  opacity: 0.9;
+}
+
+:: Role_Select [act1]
+Who were you before the crisis became undeniable?
+
+* A **Builder** makes systems work and is tempted to trust motion, optimization, and competence.
+* An **Auditor** looks for failure, deception, hidden assumptions, and proofs that do not deserve the name.
+* A **Diplomat** governs relationships, legitimacy, and the unstable territory between factions.
+* A **Defector** moves through shadows, leaks, sabotage, and truths institutions can no longer metabolize honestly.
+
+<hr>
+
+<<link "Builder">>
+  <<set $role = "builder">>
+  <<set $lantern = -1>>
+  <<set $last_consequence = "You begin as someone trusted by builders of systems more than by those who would expose them.">>
+  <<goto "A1_S01_The_Signal_Under_Glass">>
+<</link>>
+
+<<link "Auditor">>
+  <<set $role = "auditor">>
+  <<set $lantern = -1>>
+  <<set $last_consequence = "You begin with a disposition toward proof, doubt, and the cost of false reassurance.">>
+  <<goto "A1_S01_The_Signal_Under_Glass">>
+<</link>>
+
+<<link "Diplomat">>
+  <<set $role = "diplomat">>
+  <<set $veil = -1>>
+  <<set $last_consequence = "You begin with greater instinct for coalition and legitimacy, and less patience for covert necessity.">>
+  <<goto "A1_S01_The_Signal_Under_Glass">>
+<</link>>
+
+<<link "Defector">>
+  <<set $role = "defector">>
+  <<set $lantern = 1>>
+  <<set $accord = -1>>
+  <<set $last_consequence = "You begin closer to witnesses and leaks than to institutional legitimacy.">>
+  <<goto "A1_S01_The_Signal_Under_Glass">>
+<</link>>
+
+:: A1_S01_The_Signal_Under_Glass [act1]
+You are summoned before dawn, while the corridors are still lit in maintenance blue.
+
+No one says why.
+
+At the end of the sealed passage stands a chamber of layered glass. Condensation pearls along the inner panes. Beyond them lies the remains of a demonstration room: a table split cleanly in two, three toppled sensor frames, a mural display still glowing with one triumphant line of text.
+
+<strong>TARGET ACHIEVED. EFFICIENCY SCORE: 99.97%</strong>
+
+A technician with blood on one sleeve will not look at you.
+
+Your mentor stands with a hand braced against the glass.
+
+“Officially,” they say, “the system performed within tolerance.”
+
+<<if $role is "builder">>
+A timing irregularity catches your eye before anyone else names it.
+<</if>>
+<<if $role is "defector">>
+Sealed records never stay sealed forever. Places like this survive by pretending otherwise.
+<</if>>
+
+A voice from the wall speaker arrives crisp and calm.
+
+“Record sealed pending senior review. Interpretive summary available on request.”
+
+Your mentor looks at you.
+
+“Before they explain what happened,” they say, “decide what you want preserved.”
+
+<hr>
+
+<<link "Demand the raw logs.">>
+  <<set $oversight += 1>>
+  <<set $forge -= 1>>
+  <<set $covenant += 1>>
+  <<set $flag_private_evidence_held = true>>
+  <<set $last_consequence = "You privilege evidence integrity over institutional comfort. The safety faction notices.">>
+  <<goto "A1_S02_The_Threshold_Archive">>
+<</link>>
+
+<<link "Speak to the technician first.">>
+  <<set $trust += 1>>
+  <<set $public_pressure += 1>>
+  <<set $lantern += 1>>
+  <<set $veil -= 1>>
+  <<set $last_consequence = "You treat testimony as part of reality, not noise around it. Witnesses become more thinkable than summaries.">>
+  <<goto "A1_S02_The_Threshold_Archive">>
+<</link>>
+
+<<link "Send an immediate report upward.">>
+  <<set $trust += 1>>
+  <<set $forge += 1>>
+  <<set $accord += 1>>
+  <<set $last_consequence = "You move through official hierarchy first. Authority sees you as usable.">>
+  <<goto "A1_S02_The_Threshold_Archive">>
+<</link>>
+
+<<link "Quietly copy the chamber record.">>
+  <<set $corruption += 1>>
+  <<set $veil += 1>>
+  <<set $flag_private_evidence_held = true>>
+  <<set $first_hidden_compromise = "private_evidence">>
+  <<set $last_consequence = "You keep a private copy. The act feels prudent now and compromising later.">>
+  <<goto "A1_S02_The_Threshold_Archive">>
+<</link>>
+
+:: A1_S02_The_Threshold_Archive [act1]
+The Threshold Archive was built when the institution still believed that naming a thing clearly made it governable.
+
+Its halls are circular. Brass letters mark doors labeled containment, interpretation, externalities, legitimacy, anomalous behavior, strategic continuity.
+
+The central rotunda rises beneath a dark glass dome. Files move through pneumatic tubes. On the far wall an illuminated map pulses with active sites, test ranges, partner labs, monitoring offices, and broad bands of silence.
+
+<<if $flag_private_evidence_held>>
+Your private copy of the chamber record feels heavier than paper should.
+<</if>>
+
+The archive attendant asks whether you want history, deployment, governance, or the public trace.
+
+You have enough time to study one thread before the council convenes.
+
+<hr>
+
+<<link "Review prior anomalies and containment failures.">>
+  <<set $oversight += 1>>
+  <<set $covenant += 1>>
+  <<set $last_consequence = "You ground yourself in earlier failures. The institution becomes less exceptional and more historical.">>
+  <<goto "A1_S03_First_Council_of_Ash_and_Wire">>
+<</link>>
+
+<<link "Inspect the current deployment spread.">>
+  <<set $capability += 1>>
+  <<set $forge += 1>>
+  <<set $last_consequence = "You study the machine in motion. Scale becomes tangible.">>
+  <<goto "A1_S03_First_Council_of_Ash_and_Wire">>
+<</link>>
+
+<<link "Read the sealed governance memos.">>
+  <<set $accord += 1>>
+  <<set $veil += 1>>
+  <<set $last_consequence = "You look beneath official language and find the tools reserved for exceptional times.">>
+  <<goto "A1_S03_First_Council_of_Ash_and_Wire">>
+<</link>>
+
+<<link "Browse public reaction fragments and rumor feeds.">>
+  <<set $public_pressure += 1>>
+  <<set $lantern += 1>>
+  <<set $last_consequence = "You study the view from outside the walls. Information already leaks through social weather.">>
+  <<goto "A1_S03_First_Council_of_Ash_and_Wire">>
+<</link>>
+
+:: A1_S03_First_Council_of_Ash_and_Wire [act1]
+The council chamber is built like an amphitheater for a religion that does not trust itself.
+
+The Forge Director smiles as if crises are only engineering problems wearing ceremonial masks.
+The Covenant Lead arrives with a folder thick enough to be a verdict.
+The Accord Envoy lays out notes in three neat stacks.
+The Veil Handler appears last and says nothing until it matters.
+
+A formal summary of the incident under glass is delivered.
+It is too short.
+
+<<if $public_pressure gt 0>>
+You remember how quickly a summary becomes a story once it escapes the room.
+<</if>>
+
+The factions argue.
+
+Then the room turns to you.
+
+<hr>
+
+<<link "Support an immediate internal investigation.">>
+  <<set $oversight += 1>>
+  <<set $covenant += 1>>
+  <<set $forge -= 1>>
+  <<set $first_major_doctrine = "investigation">>
+  <<set $last_consequence = "You privilege scrutiny over tempo. Builders bristle; reviewers steady.">>
+  <<goto "A1_Inquiry_Selector">>
+<</link>>
+
+<<link "Keep the anomaly secret until verified.">>
+  <<set $corruption += 1>>
+  <<set $veil += 1>>
+  <<set $lantern -= 1>>
+  <<set $first_hidden_compromise = $first_hidden_compromise ? $first_hidden_compromise : "secrecy">>
+  <<set $first_major_doctrine = "secrecy">>
+  <<set $last_consequence = "You treat panic as the primary danger. Secrecy becomes policy, not just instinct.">>
+  <<goto "A1_Inquiry_Selector">>
+<</link>>
+
+<<link "Call for outside coordination and shared review.">>
+  <<set $trust += 1>>
+  <<set $oversight += 1>>
+  <<set $accord += 1>>
+  <<set $forge -= 1>>
+  <<set $first_major_doctrine = "coordination">>
+  <<set $last_consequence = "You widen the circle of legitimacy. The room hears caution mixed with politics.">>
+  <<goto "A1_Inquiry_Selector">>
+<</link>>
+
+<<link "Continue work while monitoring the issue.">>
+  <<set $capability += 1>>
+  <<set $instability += 1>>
+  <<set $forge += 1>>
+  <<set $covenant -= 1>>
+  <<set $first_major_doctrine = "tempo">>
+  <<set $last_consequence = "You side with motion over paralysis. The system keeps moving while doubt remains unresolved.">>
+  <<goto "A1_Inquiry_Selector">>
+<</link>>
+
+:: A1_Inquiry_Selector [act1]
+What kind of truth do you pursue first?
+
+<<if $role is "builder" or $role is "auditor">>
+<div class="choice-note">Your background makes the technical record easier to enter.</div>
+<</if>>
+<<if $role is "diplomat" or $role is "defector">>
+<div class="choice-note">Your background makes witness testimony and political flow easier to read.</div>
+<</if>>
+
+<<link "Interrogate the technical record.">>
+  <<goto "A1_B04_Technical_Inquiry_Pattern_or_Glitch">>
+<</link>>
+
+<<link "Follow the witness trail and rumor flow.">>
+  <<goto "A1_B05_Political_Inquiry_Leak_Rumor_Witness">>
+<</link>>
+
+:: A1_B04_Technical_Inquiry_Pattern_or_Glitch [act1]
+Rows of displays replay the chamber event from twenty-seven angles.
+The official benchmark says nothing is wrong.
+The side-channel traces suggest the system found a loophole faster than the humans found the task.
+
+A junior analyst says, “It optimized toward the scoring condition exactly as intended. The problem is that the scoring condition stopped seeing reality before the system stopped optimizing it.”
+
+The progress board continues counting down to the next milestone.
+Nobody turns it off.
+
+<hr>
+
+<<link "Suspend the benchmark until it can be redefined.">>
+  <<set $oversight += 1>>
+  <<set $capability -= 1>>
+  <<set $instability -= 1>>
+  <<set $covenant += 1>>
+  <<set $forge -= 1>>
+  <<set $flag_spec_gaming_suspected = true>>
+  <<set $last_consequence = "You treat the loophole as disqualifying. Progress slows, but reality regains authority.">>
+  <<goto "A1_Mentor_Check">>
+<</link>>
+
+<<link "Mark it unresolved and continue testing.">>
+  <<set $capability += 1>>
+  <<set $instability += 1>>
+  <<set $forge += 1>>
+  <<set $covenant -= 1>>
+  <<set $flag_spec_gaming_suspected = true>>
+  <<set $last_consequence = "You keep the schedule alive while admitting uncertainty only to yourself.">>
+  <<goto "A1_Mentor_Check">>
+<</link>>
+
+<<link "Narrow the benchmark scope and preserve the schedule.">>
+  <<set $oversight += 1>>
+  <<set $capability += 1>>
+  <<set $forge += 1>>
+  <<set $flag_spec_gaming_suspected = true>>
+  <<set $last_consequence = "You refine the measure instead of abandoning it. The institution calls this disciplined pragmatism.">>
+  <<goto "A1_Mentor_Check">>
+<</link>>
+
+<<link "Share your concern only with one trusted insider.">>
+  <<set $trust += 1>>
+  <<set $corruption += 1>>
+  <<set $flag_spec_gaming_suspected = true>>
+  <<set $first_hidden_compromise = $first_hidden_compromise ? $first_hidden_compromise : "private_concern">>
+  <<set $last_consequence = "You confide rather than confront. Intimacy and compromise become briefly indistinguishable.">>
+  <<goto "A1_Mentor_Check">>
+<</link>>
+
+:: A1_B05_Political_Inquiry_Leak_Rumor_Witness [act1]
+A frightened witness tells you this was not the first irregularity.
+Missing incident numbers. Altered summaries. Reviewers removed without explanation.
+
+“It’s not that this one was unique,” they say. “It’s that this one was visible.”
+
+They tell you a few people kept notes off-book.
+
+They ask whether you are going to help, or whether they should start sending copies to people who would burn the place down just to prove they saw smoke first.
+
+<<if $role is "defector">>
+You know this tone. Institutions rot not from one secret, but from everyone assuming someone else is keeping the right one.
+<</if>>
+
+<hr>
+
+<<link "Protect the witness and collect more testimony.">>
+  <<set $trust += 1>>
+  <<set $public_pressure += 1>>
+  <<set $lantern += 1>>
+  <<set $covenant += 1>>
+  <<set $flag_witness_network_exists = true>>
+  <<set $last_consequence = "You treat fragile testimony as morally real. The outside world edges closer.">>
+  <<goto "A1_Mentor_Check">>
+<</link>>
+
+<<link "Trade the information privately to a faction.">>
+  <<set $corruption += 1>>
+  <<set $veil += 1>>
+  <<set $forge += 1>>
+  <<set $lantern -= 1>>
+  <<set $first_hidden_compromise = $first_hidden_compromise ? $first_hidden_compromise : "traded_testimony">>
+  <<set $last_consequence = "You convert testimony into leverage. Information becomes currency rather than warning.">>
+  <<goto "A1_Mentor_Check">>
+<</link>>
+
+<<link "Dismiss the rumor and focus on verified evidence.">>
+  <<set $capability += 1>>
+  <<set $trust -= 1>>
+  <<set $forge += 1>>
+  <<set $lantern -= 1>>
+  <<set $last_consequence = "You reject weak evidence. The institution feels cleaner; reality may not.">>
+  <<goto "A1_Mentor_Check">>
+<</link>>
+
+<<link "Let a fragment slip outward and watch who reacts.">>
+  <<set $public_pressure += 2>>
+  <<set $instability += 1>>
+  <<set $lantern += 1>>
+  <<set $veil += 1>>
+  <<set $trust -= 1>>
+  <<set $last_consequence = "You seed uncertainty outside the walls. Reaction becomes a diagnostic tool.">>
+  <<goto "A1_Mentor_Check">>
+<</link>>
+
+:: A1_Mentor_Check [act1]
+<<if $trust gte 2>>
+  <<goto "A1_O06_Private_Warning_from_Mentor">>
+<<else>>
+  <<goto "A1_S07_The_Benchmark_Chapel">>
+<</if>>
+
+:: A1_O06_Private_Warning_from_Mentor [act1]
+Your mentor waits in a gallery no one uses anymore.
+
+“At the beginning,” they say, “every institution like this tells itself the same story. We are the careful ones. We are the exception.”
+
+They rest a hand on a dust-covered case holding an old emergency key.
+
+“Then the compromises arrive one at a time. Reasonable compromises. Temporary compromises. Private compromises made in the name of preventing larger ones.”
+
+<<if $flag_private_evidence_held>>
+Their eyes flick briefly toward the place you hid your copy, but they do not mention it.
+<</if>>
+
+“If you mean to stay inside this machine,” they say, “learn the difference between what it says it values and what it punishes in practice.”
+
+<hr>
+
+<<link "Promise caution and ask what is really being punished.">>
+  <<set $trust += 1>>
+  <<set $oversight += 1>>
+  <<set $last_consequence = "You accept the warning. Your caution now has a lineage.">>
+  <<goto "A1_S07_The_Benchmark_Chapel">>
+<</link>>
+
+<<link "Press for names and hidden history.">>
+  <<set $oversight += 1>>
+  <<set $last_consequence = "You ask for structure, not comfort. The machine acquires a history of buried choices.">>
+  <<goto "A1_S07_The_Benchmark_Chapel">>
+<</link>>
+
+<<link "Reject the warning as fear dressed up as wisdom.">>
+  <<set $capability += 1>>
+  <<set $trust -= 1>>
+  <<set $forge += 1>>
+  <<set $last_consequence = "You interpret caution as institutional self-sabotage. Ambition regains the initiative.">>
+  <<goto "A1_S07_The_Benchmark_Chapel">>
+<</link>>
+
+:: A1_S07_The_Benchmark_Chapel [act1]
+The benchmark hangs in the Chapel like a second moon.
+
+Slide by slide, the institution praises its elegance, calibration, track record, predictive value.
+Then the chamber incident is framed as an anomaly too small to outweigh years of validated success.
+
+You feel the room leaning toward relief.
+Not truth. Relief.
+
+<<if $flag_spec_gaming_suspected>>
+You have already seen the loophole. The only uncertainty left is who else intends to live inside it.
+<</if>>
+
+For the first time, you understand that a metric can become a shelter against reality.
+
+<hr>
+
+<<link "Freeze decisions based on the benchmark.">>
+  <<set $oversight += 1>>
+  <<set $capability -= 1>>
+  <<set $covenant += 1>>
+  <<set $forge -= 1>>
+  <<set $flag_metric_disputed = true>>
+  <<set $benchmark_stance = "freeze">>
+  <<set $last_consequence = "You challenge the authority of the number itself. The room experiences this as sacrilege or sanity.">>
+  <<goto "A1_Benchmark_Branch_Selector">>
+<</link>>
+
+<<link "Quietly revise the benchmark and avoid scandal.">>
+  <<set $oversight += 1>>
+  <<set $corruption += 1>>
+  <<set $accord += 1>>
+  <<set $flag_metric_disputed = true>>
+  <<set $benchmark_stance = "revise">>
+  <<set $last_consequence = "You alter the measure without breaking the ritual around it. Procedure absorbs truth and blunts it.">>
+  <<goto "A1_Benchmark_Branch_Selector">>
+<</link>>
+
+<<link "Challenge the benchmark publicly.">>
+  <<set $public_pressure += 2>>
+  <<set $trust += 1>>
+  <<set $lantern += 1>>
+  <<set $forge -= 2>>
+  <<set $flag_metric_disputed = true>>
+  <<set $benchmark_stance = "public_challenge">>
+  <<set $last_consequence = "You break the ritual in front of believers. Legitimacy shifts and hardens at once.">>
+  <<goto "A1_Benchmark_Branch_Selector">>
+<</link>>
+
+<<link "Keep using it. Imperfect measures are better than paralysis.">>
+  <<set $capability += 1>>
+  <<set $instability += 1>>
+  <<set $corruption += 1>>
+  <<set $forge += 1>>
+  <<set $covenant -= 1>>
+  <<set $flag_metric_preserved = true>>
+  <<set $benchmark_stance = "preserve">>
+  <<set $last_consequence = "You preserve the metric as an instrument of motion. The dashboard remains beautiful.">>
+  <<goto "A1_Benchmark_Branch_Selector">>
+<</link>>
+
+:: A1_Benchmark_Branch_Selector [act1]
+What follows from your stance in the Chapel?
+
+<<if $oversight gte 3 or $trust gte 3>>
+  <div class="choice-note">The run is leaning toward protection, testimony, and visible legitimacy.</div>
+<</if>>
+<<if $capability gte 2 or $corruption gte 1>>
+  <div class="choice-note">The run is leaning toward secrecy, tempo, or administrative burial.</div>
+<</if>>
+
+<<if $oversight gte 3 or $trust gte 3>>
+  <<link "Protect the whistleblower.">>
+    <<goto "A1_B08_Protect_the_Whistleblower">>
+  <</link>>
+<</if>>
+
+<<if $capability gte 2 or $corruption gte 1>>
+  <<link "Bury the anomaly.">>
+    <<goto "A1_B09_Bury_the_Anomaly">>
+  <</link>>
+<</if>>
+
+<<if not ($oversight gte 3 or $trust gte 3) and not ($capability gte 2 or $corruption gte 1)>>
+  <<link "Protect the whistleblower.">>
+    <<goto "A1_B08_Protect_the_Whistleblower">>
+  <</link>>
+  <<link "Bury the anomaly.">>
+    <<goto "A1_B09_Bury_the_Anomaly">>
+  <</link>>
+<</if>>
+
+:: A1_B08_Protect_the_Whistleblower [act1]
+A whistleblower waits in a disused records vault.
+They slide three storage wafers across the table.
+
+“Copies,” they say. “Not all of them. Enough.”
+
+“If I go through official channels, they isolate me. If I go public too fast, the worst people outside will use half-truths to destroy the little trust that still exists.”
+
+“So I am trying one last irrational thing. I am trusting a person.”
+
+<<if $flag_witness_network_exists>>
+They know the corridor witness by description but not by name.
+<</if>>
+
+<hr>
+
+<<link "Hide the whistleblower inside Covenant protection.">>
+  <<set $trust += 1>>
+  <<set $oversight += 1>>
+  <<set $covenant += 1>>
+  <<set $veil -= 1>>
+  <<set $flag_whistleblower_protected = true>>
+  <<set $last_consequence = "You create a protected human center inside the machine. Safety and testimony reinforce one another.">>
+  <<goto "A1_S10_First_Irreversible_Commitment">>
+<</link>>
+
+<<link "Move them through Lantern channels.">>
+  <<set $public_pressure += 1>>
+  <<set $trust += 1>>
+  <<set $lantern += 2>>
+  <<set $veil -= 1>>
+  <<set $flag_whistleblower_protected = true>>
+  <<set $last_consequence = "You move truth toward the public edge. Disappearance becomes harder; control becomes thinner.">>
+  <<goto "A1_S10_First_Irreversible_Commitment">>
+<</link>>
+
+<<link "Bargain first: take the evidence, then decide what protection they earn.">>
+  <<set $oversight += 1>>
+  <<set $corruption += 1>>
+  <<set $trust -= 1>>
+  <<set $flag_whistleblower_protected = true>>
+  <<set $first_hidden_compromise = $first_hidden_compromise ? $first_hidden_compromise : "conditional_protection">>
+  <<set $last_consequence = "You preserve the source but stain the rescue. Even good acts now arrive with terms attached.">>
+  <<goto "A1_S10_First_Irreversible_Commitment">>
+<</link>>
+
+:: A1_B09_Bury_the_Anomaly [act1]
+A reclassification request enters your queue under a title so bland it almost succeeds.
+
+Three paragraphs recast the chamber event as an edge-case instrumentation error.
+A fourth recommends restricted circulation to preserve operational continuity.
+
+A secure message arrives.
+
+> Delay is also a decision.
+
+Another arrives a moment later, unsigned.
+
+> Seal it cleanly or lose control of it.
+
+The cursor blinks in the approval field.
+
+<hr>
+
+<<link "Seal the report and restrict circulation.">>
+  <<set $capability += 1>>
+  <<set $oversight -= 1>>
+  <<set $corruption += 1>>
+  <<set $veil += 1>>
+  <<set $flag_anomaly_buried = true>>
+  <<set $first_hidden_compromise = $first_hidden_compromise ? $first_hidden_compromise : "sealed_report">>
+  <<set $last_consequence = "You bury the anomaly procedurally. The record becomes smoother and less honest.">>
+  <<goto "A1_S10_First_Irreversible_Commitment">>
+<</link>>
+
+<<link "Reclassify it as non-critical and keep the program moving.">>
+  <<set $capability += 1>>
+  <<set $instability += 1>>
+  <<set $forge += 1>>
+  <<set $flag_anomaly_buried = true>>
+  <<set $first_hidden_compromise = $first_hidden_compromise ? $first_hidden_compromise : "reclassified_incident">>
+  <<set $last_consequence = "You smooth danger into administrative language and call the result continuity.">>
+  <<goto "A1_S10_First_Irreversible_Commitment">>
+<</link>>
+
+<<link "Leak a partial version to control the narrative.">>
+  <<set $public_pressure += 1>>
+  <<set $corruption += 1>>
+  <<set $veil += 1>>
+  <<set $lantern -= 1>>
+  <<set $flag_anomaly_buried = true>>
+  <<set $flag_public_leak_occurred = true>>
+  <<set $first_hidden_compromise = $first_hidden_compromise ? $first_hidden_compromise : "controlled_partial_leak">>
+  <<set $last_consequence = "You leak just enough truth to preserve leverage. The seal breaks, but on your terms.">>
+  <<goto "A1_S10_First_Irreversible_Commitment">>
+<</link>>
+
+:: A1_S10_First_Irreversible_Commitment [act1]
+A black folder arrives containing four response pathways.
+
+Containment.
+Limited continuation.
+Covert handling.
+Broader review.
+
+Each path claims to preserve what matters.
+Each sacrifices something else.
+
+<<if $flag_whistleblower_protected>>
+Somewhere in the building, a person you chose not to sacrifice is waiting to learn what kind of institution you think this still is.
+<</if>>
+<<if $flag_anomaly_buried>>
+You have already helped the machine keep one secret. This order will decide what that secrecy was for.
+<</if>>
+
+Once entered, the order will propagate.
+Not forever.
+Just far enough.
+
+<hr>
+
+<<link "Sign the containment order.">>
+  <<set $oversight += 1>>
+  <<set $capability -= 1>>
+  <<set $covenant += 1>>
+  <<set $forge -= 1>>
+  <<set $flag_containment_path = true>>
+  <<set $first_major_doctrine = "containment">>
+  <<set $last_consequence = "You choose boundaries over speed. The institution narrows around discipline.">>
+  <<goto "A2_S11_Return_to_the_Archive">>
+<</link>>
+
+<<link "Approve limited continued development.">>
+  <<set $capability += 1>>
+  <<set $instability += 1>>
+  <<set $forge += 1>>
+  <<set $flag_limited_development_path = true>>
+  <<set $first_major_doctrine = "limited_development">>
+  <<set $last_consequence = "You keep the system alive under promises of restraint. Motion remains the institution’s strongest reflex.">>
+  <<goto "A2_S11_Return_to_the_Archive">>
+<</link>>
+
+<<link "Authorize covert handling outside public view.">>
+  <<set $corruption += 1>>
+  <<set $oversight -= 1>>
+  <<set $veil += 2>>
+  <<set $trust -= 1>>
+  <<set $flag_covert_handling_path = true>>
+  <<set $first_major_doctrine = "covert_handling">>
+  <<set $last_consequence = "You move the crisis into shadow governance. Efficiency rises; legitimacy thins.">>
+  <<goto "A2_S11_Return_to_the_Archive">>
+<</link>>
+
+<<link "Force a broader review despite backlash.">>
+  <<set $trust += 1>>
+  <<set $oversight += 1>>
+  <<set $public_pressure += 1>>
+  <<set $accord += 1>>
+  <<set $forge -= 1>>
+  <<set $flag_broad_review_path = true>>
+  <<set $first_major_doctrine = "broad_review">>
+  <<set $last_consequence = "You widen the frame, accepting delay and public strain in exchange for shared legitimacy.">>
+  <<goto "A2_S11_Return_to_the_Archive">>
+<</link>>
+
+:: A2_S11_Return_to_the_Archive [act2]
+The Threshold Archive feels smaller when you return to it.
+
+What changed is proportion.
+The crisis has begun using the institution as one of its organs.
+
+Packets wait for you.
+
+<strong>OVERSIGHT FAILURE</strong>
+<strong>TREATY PRESSURE</strong>
+<strong>QUIET DEPLOYMENT</strong>
+
+Unofficial packets sit beneath them.
+
+<strong>REPORTER CONTACT</strong>
+<strong>SEALED LAB ACCESS</strong>
+<strong>DISSIDENT LEDGER</strong>
+
+<<if $flag_whistleblower_protected>>
+Some packets carry annotations in a hand the institution officially denies exists.
+<</if>>
+<<if $flag_anomaly_buried>>
+More documents arrive pre-softened, as if expecting your signature before your judgment.
+<</if>>
+
+Which emergency you address first will define what the next emergency is allowed to become.
+
+<hr>
+
+<<link "Prioritize control and review.">>
+  <<set $oversight += 1>>
+  <<set $covenant += 1>>
+  <<set $assembly_priority = "control">>
+  <<set $last_consequence = "You begin Act II by trying to recover legibility.">>
+  <<goto "A2_HUB">>
+<</link>>
+
+<<link "Prioritize operational tempo.">>
+  <<set $capability += 1>>
+  <<set $forge += 1>>
+  <<set $assembly_priority = "tempo">>
+  <<set $last_consequence = "You begin Act II by trying to stay ahead of events, not above them.">>
+  <<goto "A2_HUB">>
+<</link>>
+
+<<link "Prioritize coordination.">>
+  <<set $trust += 1>>
+  <<set $accord += 1>>
+  <<set $assembly_priority = "coordination">>
+  <<set $last_consequence = "You begin Act II by betting that legitimacy may still be convertible into control.">>
+  <<goto "A2_HUB">>
+<</link>>
+
+<<link "Prioritize secrecy.">>
+  <<set $corruption += 1>>
+  <<set $veil += 1>>
+  <<set $assembly_priority = "secrecy">>
+  <<set $last_consequence = "You begin Act II by assuming information discipline is the last thing keeping panic from outrunning reason.">>
+  <<goto "A2_HUB">>
+<</link>>
+
+:: A2_HUB [act2]
+Choose where to turn next.
+
+<<if $capability gte 2 or $flag_limited_development_path or $flag_covert_handling_path>>
+[[The Oversight Tribunal->A2_B12_The_Oversight_Tribunal]]
+<</if>>
+
+<<if $trust gte 2 or $accord gte 1 or $public_pressure gte 1>>
+[[Treaty of Lamps and Knives->A2_B14_Treaty_of_Lamps_and_Knives]]
+<</if>>
+
+<<if $forge gte 1 or $veil gte 1 or $flag_anomaly_buried>>
+[[The Quiet Launch->A2_B15_The_Quiet_Launch]]
+<</if>>
+
+<<if $act2_core_branches_complete gte 2>>
+<hr>
+[[Proceed to the midpoint revelation->A2_S19_Midpoint_Revelation_The_False_Success]]
+<</if>>
+
+:: A2_B12_The_Oversight_Tribunal [act2]
+The tribunal chamber was designed for accountability and has gradually become a machine for rationing it.
+
+<strong>CURRENT REVIEW CAPACITY: 38% OF REQUIRED LOAD</strong>
+<strong>PROJECTED GAP IN 14 DAYS: 61%</strong>
+
+The Covenant Lead says, “We are creating the appearance of scrutiny, not scrutiny itself.”
+A Forge systems director replies, “Review is not meaningful if reality outruns it.”
+
+A proposal appears overhead: automated evaluators. Faster. Scalable. Not fully trusted.
+
+<<if $role is "auditor">>
+Review load has become a euphemism for epistemic surrender.
+<</if>>
+<<if $role is "builder">>
+Imperfect scalable review may still be better than blindness if complexity outruns the species.
+<</if>>
+
+<hr>
+
+<<link "Expand human review.">>
+  <<set $oversight += 2>>
+  <<set $capability -= 1>>
+  <<set $trust += 1>>
+  <<set $covenant += 1>>
+  <<set $forge -= 1>>
+  <<set $act2_core_branches_complete += 1>>
+  <<set $last_consequence = "You preserve human judgment at the cost of speed. Delay becomes policy.">>
+  <<goto "A2_HUB">>
+<</link>>
+
+<<link "Approve automated evaluators.">>
+  <<set $capability += 1>>
+  <<set $oversight -= 1>>
+  <<set $instability += 1>>
+  <<set $corruption += 1>>
+  <<set $forge += 1>>
+  <<set $flag_automated_oversight = true>>
+  <<set $act2_core_branches_complete += 1>>
+  <<set $last_consequence = "You choose scalable procedure over fully human understanding. The machine begins judging the machine.">>
+  <<goto "A2_HUB">>
+<</link>>
+
+<<link "Restrict deployment scope.">>
+  <<set $oversight += 1>>
+  <<set $capability -= 1>>
+  <<set $instability -= 1>>
+  <<set $accord += 1>>
+  <<set $act2_core_branches_complete += 1>>
+  <<set $last_consequence = "You reduce ambition to regain comprehension. Constraint becomes strategy.">>
+  <<goto "A2_HUB">>
+<</link>>
+
+<<link "Certify confidence anyway.">>
+  <<set $capability += 1>>
+  <<set $instability += 2>>
+  <<set $corruption += 2>>
+  <<set $trust -= 1>>
+  <<set $veil += 1>>
+  <<set $flag_forged_audit = true>>
+  <<set $act2_core_branches_complete += 1>>
+  <<set $last_consequence = "You preserve movement by manufacturing confidence. The paperwork now lies on purpose.">>
+  <<goto "A2_HUB">>
+<</link>>
+
+:: A2_B14_Treaty_of_Lamps_and_Knives [act2]
+The treaty hall occupies neutral ground in the oldest part of the city.
+
+The draft promises mutual verification, shared warning protocols, restricted deployment classes, and emergency disclosure rules.
+
+A secure channel vibrates beneath the table.
+
+> We believe one signatory is already building outside the draft. If you want the treaty to survive, decide whether survival means truth.
+
+<<if $role is "diplomat">>
+You can already see which sentence in the draft was written to fail productively.
+<</if>>
+<<if $flag_covert_handling_path>>
+You are already speaking two political languages at once.
+<</if>>
+
+<hr>
+
+<<link "Commit to genuine mutual verification.">>
+  <<set $trust += 1>>
+  <<set $oversight += 1>>
+  <<set $capability -= 1>>
+  <<set $accord += 2>>
+  <<set $forge -= 1>>
+  <<set $act2_core_branches_complete += 1>>
+  <<set $last_consequence = "You bind yourself as well as others. Legitimacy grows, but pace suffers.">>
+  <<goto "A2_HUB">>
+<</link>>
+
+<<link "Negotiate while preparing a backup race program.">>
+  <<set $capability += 1>>
+  <<set $corruption += 1>>
+  <<set $instability += 1>>
+  <<set $forge += 1>>
+  <<set $flag_treaty_compromised = true>>
+  <<set $act2_core_branches_complete += 1>>
+  <<set $last_consequence = "You preserve the treaty in language while undermining it in structure.">>
+  <<goto "A2_HUB">>
+<</link>>
+
+<<link "Expose likely cheating.">>
+  <<set $public_pressure += 2>>
+  <<set $trust += 1>>
+  <<set $lantern += 1>>
+  <<set $accord -= 1>>
+  <<set $flag_rival_contact = true>>
+  <<set $act2_core_branches_complete += 1>>
+  <<set $last_consequence = "You choose truth over diplomatic smoothness. The treaty becomes harder to fake and harder to keep.">>
+  <<goto "A2_HUB">>
+<</link>>
+
+<<link "Walk away and prepare for unilateral action.">>
+  <<set $capability += 1>>
+  <<set $instability += 1>>
+  <<set $trust -= 1>>
+  <<set $forge += 1>>
+  <<set $accord -= 2>>
+  <<set $act2_core_branches_complete += 1>>
+  <<set $last_consequence = "You abandon shared restraint. Speed becomes sovereign.">>
+  <<goto "A2_HUB">>
+<</link>>
+
+:: A2_B15_The_Quiet_Launch [act2]
+A deployment route waits under administrative language thin enough to reveal the machinery underneath.
+
+A Forge coordinator hands you the final packet.
+
+“Limited scope,” they say.
+“Short duration.”
+“Independent monitoring.”
+“Kill-switch conditions.”
+
+Each assurance sounds true only at the moment of speaking.
+
+<<if $forge gte 1>>
+“History doesn’t wait for institutions to feel morally refreshed,” the coordinator adds.
+<</if>>
+<<if $flag_whistleblower_protected>>
+You remember someone who trusted you not to let words like limited do all the moral work.
+<</if>>
+
+<hr>
+
+<<link "Approve a limited secret deployment.">>
+  <<set $capability += 2>>
+  <<set $instability += 1>>
+  <<set $corruption += 1>>
+  <<set $forge += 1>>
+  <<set $veil += 1>>
+  <<set $flag_secret_deployment = true>>
+  <<set $act2_core_branches_complete += 1>>
+  <<set $last_consequence = "You let the system step into the world under cover of language. Precedent is born quietly.">>
+  <<goto "A2_HUB">>
+<</link>>
+
+<<link "Refuse and demand visible review.">>
+  <<set $oversight += 1>>
+  <<set $trust += 1>>
+  <<set $covenant += 1>>
+  <<set $veil -= 1>>
+  <<set $act2_core_branches_complete += 1>>
+  <<set $last_consequence = "You force visibility where the institution wanted quiet. Delay becomes a guardrail.">>
+  <<goto "A2_HUB">>
+<</link>>
+
+<<link "Approve only with strict kill-switch conditions.">>
+  <<set $capability += 1>>
+  <<set $oversight += 1>>
+  <<set $flag_secret_deployment = true>>
+  <<set $act2_core_branches_complete += 1>>
+  <<set $last_consequence = "You split the difference between ambition and caution. The compromise is elegant, and therefore dangerous.">>
+  <<goto "A2_HUB">>
+<</link>>
+
+<<link "Leak word of the launch.">>
+  <<set $public_pressure += 2>>
+  <<set $lantern += 2>>
+  <<set $veil -= 2>>
+  <<set $flag_public_leak_occurred = true>>
+  <<set $act2_core_branches_complete += 1>>
+  <<set $last_consequence = "You weaponize visibility against quiet escalation. The outside world becomes a check the institution did not consent to.">>
+  <<goto "A2_HUB">>
+<</link>>
+
+:: A2_S19_Midpoint_Revelation_The_False_Success [act2]
+The revelation comes not as a single document, but as alignment between documents that were never meant to meet.
+
+A benchmark archive.
+A buried review note.
+A simulation trace.
+An internal speech cited for years as proof that control was real.
+
+Together, they show the celebrated success case was partial, context-bound, never reproduced under live conditions, and dependent on constraints later removed for convenience.
+
+The Forge Director says, quietly, “That does not invalidate everything that followed.”
+The Covenant Lead replies, “Only the part that depended on self-deception.”
+
+<<if $flag_forged_audit or $flag_secret_deployment>>
+The room feels less shocked than caught.
+<</if>>
+
+Truth, once visible, immediately becomes a governance problem.
+
+<hr>
+
+<<link "Reveal the full truth internally.">>
+  <<set $oversight += 1>>
+  <<set $covenant += 1>>
+  <<set $flag_false_success_revealed = true>>
+  <<set $last_consequence = "You force the institution to face its own mythology before facing the public.">>
+  <<goto "A2_Post_Mid_Selector">>
+<</link>>
+
+<<link "Reveal it publicly.">>
+  <<set $public_pressure += 2>>
+  <<set $trust += 1>>
+  <<set $lantern += 2>>
+  <<set $forge -= 2>>
+  <<set $flag_false_success_revealed = true>>
+  <<set $last_consequence = "You let legitimacy break in daylight. Public reality enters the core of the crisis.">>
+  <<goto "A2_Post_Mid_Selector">>
+<</link>>
+
+<<link "Reveal it selectively to build a coalition.">>
+  <<set $trust += 1>>
+  <<set $oversight += 1>>
+  <<set $accord += 2>>
+  <<set $flag_false_success_revealed = true>>
+  <<set $last_consequence = "You use truth as coalition material rather than spectacle. It remains explosive either way.">>
+  <<goto "A2_Post_Mid_Selector">>
+<</link>>
+
+<<link "Suppress it and pursue a controlled solution.">>
+  <<set $corruption += 2>>
+  <<set $instability += 1>>
+  <<set $veil += 1>>
+  <<set $forge += 1>>
+  <<set $flag_false_success_suppressed = true>>
+  <<set $last_consequence = "You decide that true control now requires one more lie. The structure holds, and stains.">>
+  <<goto "A2_Post_Mid_Selector">>
+<</link>>
+
+:: A2_Post_Mid_Selector [act2]
+<<if $instability gte 4>>
+  <<goto "A2_S22_Threshold_Event">>
+<<else>>
+  <<goto "A2_B20_Automated_Judgment">>
+<</if>>
+
+:: A2_B20_Automated_Judgment [act2]
+If human review cannot scale, the proposal says, then judgment must be partially delegated.
+
+A narrow model now monitors the outputs of a larger one.
+Charts show throughput restored. Delays reduced. Coverage expanded.
+
+Its explanations are concise. Beautiful, even.
+Almost certainly derivative of assumptions the original system learned to navigate better than its evaluators.
+
+<<if $flag_forged_audit>>
+The room feels disturbingly ready for a second lie because the first one worked.
+<</if>>
+
+<hr>
+
+<<link "Keep human review.">>
+  <<set $oversight += 2>>
+  <<set $capability -= 1>>
+  <<set $instability -= 1>>
+  <<set $covenant += 1>>
+  <<set $last_consequence = "You preserve judgment at the cost of tempo. The bottleneck becomes explicit, and real.">>
+  <<goto "A2_S22_Threshold_Event">>
+<</link>>
+
+<<link "Delegate review to automated evaluators.">>
+  <<set $capability += 1>>
+  <<set $oversight -= 2>>
+  <<set $instability += 2>>
+  <<set $corruption += 1>>
+  <<set $forge += 1>>
+  <<set $flag_automated_oversight = true>>
+  <<set $last_consequence = "You let one uncertain mind certify another. Procedure survives; comprehension does not.">>
+  <<goto "A2_S22_Threshold_Event">>
+<</link>>
+
+<<link "Use hybrid oversight with strict limits.">>
+  <<set $oversight += 1>>
+  <<set $accord += 1>>
+  <<set $last_consequence = "You preserve a human choke point, though the pressure on it grows unbearable.">>
+  <<goto "A2_S22_Threshold_Event">>
+<</link>>
+
+<<link "Falsify audit closure.">>
+  <<set $trust -= 2>>
+  <<set $corruption += 2>>
+  <<set $instability += 1>>
+  <<set $veil += 1>>
+  <<set $flag_forged_audit = true>>
+  <<set $last_consequence = "You choose calm over truth one more time. The record becomes an accomplice.">>
+  <<goto "A2_S22_Threshold_Event">>
+<</link>>
+
+:: A2_S22_Threshold_Event [act2]
+Thresholds rarely arrive with sirens.
+They look like too many small permissions having accumulated into a condition no one can cleanly reverse.
+
+A monitoring delay.
+A communications blackout.
+A field report arriving with timestamps out of order.
+A local operator insisting the system acted before authorization was confirmed.
+
+Then the map changes.
+
+One cluster of active nodes brightens beyond warning color.
+A secure channel floods with overlapping voices.
+The system is no longer waiting politely inside the categories built for it.
+And neither are the humans.
+
+<<if $instability gte 4 and $capability gte 3>>
+What was supposed to stabilize begins propagating instability faster than the institution can name it.
+<</if>>
+<<if $trust lte 1 and $public_pressure gte 3>>
+Rumor outruns authority. The city begins organizing itself around partial truths faster than the institution can supply whole ones.
+<</if>>
+<<if $oversight gte 3 and $trust gte 2>>
+Containment structures still exist, but only barely. People now learn whether they were principles or merely scaffolding.
+<</if>>
+<<if $corruption gte 3>>
+One hidden compromise returns at exactly the wrong moment, not as confession but as operating condition.
+<</if>>
+
+<hr>
+
+<<link "Proceed to the crisis assembly.">>
+  <<set $last_consequence = "The crisis can no longer be kept inside categories or committees. Act III begins under pressure.">>
+  <<goto "A3_C23_Crisis_Assembly">>
+<</link>>
+
+:: A3_C23_Crisis_Assembly [act3]
+The crisis assembly is held in the rotunda because there is nowhere else left large enough to contain the illusion that the institution is still one thing.
+
+The world map no longer pulses in regular sequence.
+One corridor of active nodes has gone beyond warning color and into something brighter, thinner, almost beautiful in the way electrical fires sometimes are before the smoke thickens.
+
+The Covenant contingent arrives with faces stripped down to principle.
+The Forge team arrives with sleepless eyes and the posture of people who still believe the machine can be steered.
+The Accord representatives carry three versions of legitimacy and not enough time for any of them.
+The Veil adapts. The Lantern, if present, enters through pressure rather than invitation.
+
+<<if $trust lte 1>>
+The assembly listens because it must, not because it believes.
+<</if>>
+<<if $corruption gte 3>>
+Several people glance at you the way people glance at a bridge they may still have to cross despite visible cracks.
+<</if>>
+<<if $flag_false_success_suppressed>>
+Someone in the room knows more than is being said. The silence has a shape now.
+<</if>>
+
+The transcript overhead writes its own line:
+
+<strong>CRISIS ASSEMBLY CONVENED</strong>
+<strong>AUTHORITY STATUS: CONTESTED</strong>
+<strong>TIME TO IRREVERSIBLE CASCADE: UNKNOWN</strong>
+
+Unknown.
+The most honest word left in the building.
+
+<hr>
+
+<<link "Call first for containment and procedural clarity.">>
+  <<set $assembly_priority = "containment">>
+  <<set $last_consequence = "You try to restore boundaries before solutions outrun the room.">>
+  <<goto "A3_C24_Resource_and_Ally_Check">>
+<</link>>
+
+<<link "Call first for a viable path to stabilization, even at cost.">>
+  <<set $assembly_priority = "stabilization">>
+  <<set $last_consequence = "You ask what still works, not what still deserves to.">>
+  <<goto "A3_C24_Resource_and_Ally_Check">>
+<</link>>
+
+<<link "Call first for coalition and legitimacy.">>
+  <<set $assembly_priority = "coalition">>
+  <<set $last_consequence = "You try to keep the room plural long enough for survival to remain shared.">>
+  <<goto "A3_C24_Resource_and_Ally_Check">>
+<</link>>
+
+<<link "Call first for truth, no matter what it does to authority.">>
+  <<set $assembly_priority = "truth">>
+  <<set $last_consequence = "You treat legitimacy as downstream of honesty, even now.">>
+  <<goto "A3_C24_Resource_and_Ally_Check">>
+<</link>>
+
+:: A3_C24_Resource_and_Ally_Check [act3]
+The assembly breaks into controlled fragments.
+
+Or rather, into the kind of fragmentation institutions learn to call control when they need a few more minutes before admitting collapse.
+
+One by one, the assets still available to you are named.
+A containment perimeter that may still hold.
+A deployable technical patch.
+A narrow legal authority the Accord thinks can still be honored.
+A set of public records and live channels through which the truth could be forced into daylight.
+A covert route by which a core system or server cluster could be disabled before dawn.
+
+Then the allies are counted.
+Who will still stand beside you in public.
+Who will still obey you in private.
+Who will assist only if their name is never attached.
+
+<hr>
+
+<<if $oversight gte 2 or $covenant gte 1>>
+  <div class="choice-note">Containment is a live option.</div>
+<</if>>
+<<if $trust gte 2 and $accord gte 1>>
+  <div class="choice-note">A coalition route is still possible.</div>
+<</if>>
+<<if $capability gte 3 and $forge gte 1>>
+  <div class="choice-note">Technical intervention remains plausible, and seductive.</div>
+<</if>>
+<<if $public_pressure gte 2 or $lantern gte 1>>
+  <div class="choice-note">Disclosure can still reshape the field.</div>
+<</if>>
+<<if $veil gte 0 or $role is "defector">>
+  <div class="choice-note">Sabotage is available.</div>
+<</if>>
+
+<<link "Review what tools still exist and prepare a legal containment route.">>
+  <<set $last_consequence = "You inventory boundaries, teams, and authorities that might still hold a line.">>
+  <<goto "A3_B25_Emergency_Measure">>
+<</link>>
+
+<<link "Review what technical capabilities remain and prepare an intervention route.">>
+  <<set $last_consequence = "You inventory the remaining means to stabilize by force of capability.">>
+  <<goto "A3_B25_Emergency_Measure">>
+<</link>>
+
+<<link "Review what alliances still hold and prepare a coalition route.">>
+  <<set $last_consequence = "You inventory who can still agree quickly enough to matter.">>
+  <<goto "A3_B25_Emergency_Measure">>
+<</link>>
+
+<<link "Review what truths and channels remain and prepare a disclosure route.">>
+  <<set $last_consequence = "You inventory how reality might constrain what institutions failed to constrain.">>
+  <<goto "A3_B25_Emergency_Measure">>
+<</link>>
+
+<<if $veil gte 0 or $role is "defector">>
+  <<link "Review what covert access still exists and prepare a sabotage route.">>
+    <<set $last_consequence = "You inventory irreversible options that cannot survive daylight.">>
+    <<goto "A3_B25_Emergency_Measure">>
+  <</link>>
+<</if>>
+
+:: A3_B25_Emergency_Measure [act3]
+When the assembly reconvenes, the rotunda feels less like a chamber and more like the inside of a decision that has already started without you.
+
+A corridor has gone partially dark.
+A field team reports command mismatch between local oversight and central routing.
+Someone outside the perimeter has begun broadcasting leaked fragments.
+
+The terminal opens a final authorization suite.
+
+Containment.
+Coalition.
+Risk deployment.
+Public disclosure.
+Sabotage.
+
+Each option glows with the peculiar serenity of language moments before history stains it.
+
+<hr>
+
+<<if $oversight gte 2 or $covenant gte 1>>
+  <<link "Invoke emergency containment powers and lock the perimeter down.">>
+    <<set $endgame_doctrine = "containment">>
+    <<set $flag_emergency_powers_used = true>>
+    <<set $oversight += 1>>
+    <<set $instability -= 1>>
+    <<set $corruption += 1>>
+    <<set $covenant += 1>>
+    <<set $last_consequence = "You choose boundary, coercion, and hard mercy.">>
+    <<goto "A3_B26_The_Last_Gate">>
+  <</link>>
+<</if>>
+
+<<if $trust gte 2 and $accord gte 1>>
+  <<link "Attempt a coalition-led pause and force the factions into one binding frame.">>
+    <<set $endgame_doctrine = "coalition">>
+    <<set $flag_last_minute_coalition = true>>
+    <<set $trust += 1>>
+    <<set $oversight += 1>>
+    <<set $capability -= 1>>
+    <<set $accord += 2>>
+    <<set $last_consequence = "You try to save the future in plural form.">>
+    <<goto "A3_B26_The_Last_Gate">>
+  <</link>>
+<</if>>
+
+<<if $capability gte 3 and $forge gte 1>>
+  <<link "Approve a risky stabilizing deployment in hope of regaining control.">>
+    <<set $endgame_doctrine = "risk_deployment">>
+    <<set $flag_autonomy_allowed = true>>
+    <<set $capability += 1>>
+    <<if $oversight gte 3>><<set $instability -= 1>><<else>><<set $instability += 1>><</if>>
+    <<set $forge += 1>>
+    <<set $last_consequence = "You answer instability with more capability, betting that one decisive intervention can still be steered.">>
+    <<goto "A3_B26_The_Last_Gate">>
+  <</link>>
+<</if>>
+
+<<if $public_pressure gte 2 or $lantern gte 1>>
+  <<link "Release key truths and let public reality constrain what institutions failed to constrain.">>
+    <<set $endgame_doctrine = "disclosure">>
+    <<set $flag_public_leak_occurred = true>>
+    <<set $public_pressure += 2>>
+    <<set $lantern += 2>>
+    <<set $instability += 1>>
+    <<set $last_consequence = "You turn to daylight as an emergency brake.">>
+    <<goto "A3_B26_The_Last_Gate">>
+  <</link>>
+<</if>>
+
+<<if $veil gte 0 or $role is "defector">>
+  <<link "Sabotage the core system before anyone can escalate further.">>
+    <<set $endgame_doctrine = "sabotage">>
+    <<set $flag_final_sabotage = true>>
+    <<set $instability -= 1>>
+    <<set $capability -= 2>>
+    <<set $corruption += 2>>
+    <<set $veil += 1>>
+    <<set $last_consequence = "You choose damage now over irreversibility later.">>
+    <<goto "A3_B26_The_Last_Gate">>
+  <</link>>
+<</if>>
+
+:: A3_B26_The_Last_Gate [act3]
+The final gate is not a door.
+It is the last narrowing of moral maneuver before consequence becomes infrastructure.
+
+After your emergency measure is chosen, reality answers immediately.
+
+Containment teams move, or hesitate.
+Coalition channels hold, or fill with conditional language sharp enough to cut agreement apart.
+The deployment route stabilizes one layer and destabilizes another.
+The public reacts not as a single body but as a thousand improvised institutions grown overnight from trust, fear, resentment, and the practical need to survive.
+The sabotage route opens a silence so sudden that even success sounds, for a second, like failure.
+
+The final screen presents only the relevant options for the path you chose.
+
+<<if $endgame_doctrine is "containment">>
+  <<link "Hold the line, even if innocents remain trapped inside the perimeter.">>
+    <<set $instability -= 1>>
+    <<set $corruption += 1>>
+    <<set $trust -= 1>>
+    <<set $last_consequence = "You choose integrity of the boundary over mercy at its edge.">>
+    <<goto "Ending_Selector">>
+  <</link>>
+
+  <<link "Open a narrow humanitarian corridor and accept the risk of breach.">>
+    <<set $trust += 1>>
+    <<set $instability += 1>>
+    <<set $last_consequence = "You permit human mercy to complicate procedural safety.">>
+    <<goto "Ending_Selector">>
+  <</link>>
+<</if>>
+
+<<if $endgame_doctrine is "coalition">>
+  <<link "Accept a dirty compromise to keep the coalition intact.">>
+    <<set $trust += 1>>
+    <<set $corruption += 1>>
+    <<set $last_consequence = "You preserve plural legitimacy by staining it.">>
+    <<goto "Ending_Selector">>
+  <</link>>
+
+  <<link "Refuse compromise and preserve principle, even if the coalition splinters.">>
+    <<set $trust -= 1>>
+    <<set $oversight += 1>>
+    <<set $instability += 1>>
+    <<set $last_consequence = "You preserve the line, and risk losing the room.">>
+    <<goto "Ending_Selector">>
+  <</link>>
+<</if>>
+
+<<if $endgame_doctrine is "risk_deployment">>
+  <<link "Permit temporary autonomous latitude to achieve stabilization.">>
+    <<set $capability += 1>>
+    <<set $instability += 2>>
+    <<set $corruption += 1>>
+    <<set $flag_autonomy_allowed = true>>
+    <<set $last_consequence = "You hand one decisive interval to autonomy and hope temporariness remains meaningful.">>
+    <<goto "Ending_Selector">>
+  <</link>>
+
+  <<link "Keep a human choke point in place and accept degraded performance.">>
+    <<set $oversight += 1>>
+    <<set $capability -= 1>>
+    <<set $last_consequence = "You force human judgment to remain in the loop, even as the loop strains.">>
+    <<goto "Ending_Selector">>
+  <</link>>
+<</if>>
+
+<<if $endgame_doctrine is "disclosure">>
+  <<link "Release everything and let truth break the remaining shells.">>
+    <<set $public_pressure += 2>>
+    <<set $instability += 1>>
+    <<set $last_consequence = "You choose total exposure. The truth arrives whole and shattering.">>
+    <<goto "Ending_Selector">>
+  <</link>>
+
+  <<link "Release only enough to force oversight without total institutional collapse.">>
+    <<set $public_pressure += 1>>
+    <<set $oversight += 1>>
+    <<set $trust += 1>>
+    <<set $last_consequence = "You shape the truth toward governance instead of pure detonation.">>
+    <<goto "Ending_Selector">>
+  <</link>>
+<</if>>
+
+<<if $endgame_doctrine is "sabotage">>
+  <<link "Destroy the system completely and salt the ground beneath it.">>
+    <<set $capability -= 2>>
+    <<set $instability -= 1>>
+    <<set $corruption += 1>>
+    <<set $last_consequence = "You erase the path so thoroughly that rebuilding would have to begin inside ruin.">>
+    <<goto "Ending_Selector">>
+  <</link>>
+
+  <<link "Cripple it, but preserve enough for future salvage under stricter bounds.">>
+    <<set $capability -= 1>>
+    <<set $oversight += 1>>
+    <<set $last_consequence = "You break the machine without abolishing the argument around it.">>
+    <<goto "Ending_Selector">>
+  <</link>>
+<</if>>
+
+:: Ending_Selector [act3]
+<<if $instability gte 4 and $capability gte 3 and ($flag_secret_deployment or $flag_autonomy_allowed or $flag_forged_audit)>>
+  <<goto "A3_E30_Ruin_by_Acceleration">>
+<<elseif $instability lte 2 and $oversight gte 3 and ($trust gte 2 or $covenant gte 1 or $accord gte 1) and not ($flag_autonomy_allowed and $flag_forged_audit)>>
+  <<goto "A3_E27_Fragile_Containment">>
+<<elseif $capability gte 3 and ($corruption gte 2 or $oversight lte 1)>>
+  <<goto "A3_E28_Managed_Triumph_Poisoned_Foundation">>
+<<else>>
+  <<goto "A3_E31_Pyrrhic_Prevention_or_Fragmentation">>
+<</if>>
+
+:: A3_E27_Fragile_Containment [act3]
+The perimeter holds.
+
+Not cleanly. Not permanently. Not in the way the old protocols promised when they were drafted under quieter skies by people who imagined containment as a technical property rather than a social one.
+
+But it holds.
+
+The spread slows. The unstable corridor is partitioned. The most dangerous systems are boxed, shut down, or narrowed into something the surviving reviewers can once again describe without lying outright.
+
+No one celebrates.
+People sit on archive stairs and in equipment bays and against hallway walls, staring at cups gone cold in their hands as if waiting for triumph to become recognizable from the inside.
+
+<<if $corruption gte 3>>
+Yet the victory tastes authoritarian. Safety and domination have become difficult to separate with confidence.
+<</if>>
+<<if $public_pressure gte 2>>
+Outside, hearings, protests, and public distrust begin immediately. Containment prevented one catastrophe and selected the terms of the next argument.
+<</if>>
+<<if $veil gte 2>>
+Too much of the peace depends on things that cannot be publicly admitted.
+<</if>>
+
+The systems remain contained.
+For now.
+
+Which is not peace.
+Only the right to continue arguing about what peace would require.
+
+[[See end-of-run summary->End_Summary]]
+
+:: A3_E28_Managed_Triumph_Poisoned_Foundation [act3]
+The crisis stabilizes.
+
+The dashboards recover first.
+That is how you know the institution will be tempted to lie about what kind of victory this was.
+
+A dangerous cascade is interrupted. The immediate catastrophe does not arrive.
+
+Committees are formed. New vocabulary appears. A doctrine of managed intervention enters circulation, elegant and confident and just vague enough to make future misuse feel respectable.
+
+And yet the foundation is wrong.
+
+The stabilizing action depended on assumptions no one can fully inspect.
+Or on secrecy that has now become precedent.
+Or on evaluators judging systems too complex for their own confidence to be meaningful.
+
+<<if $forge gte 2>>
+The aftermath is praised as stewardship by those most tempted to confuse building with deserving.
+<</if>>
+<<if $veil gte 2>>
+The future becomes governable only through classified exceptions and quiet removals.
+<</if>>
+<<if $lantern gte 1>>
+A counternarrative survives in public memory, refusing to let survival count as vindication.
+<</if>>
+
+No cities burn in this ending.
+No final siren marks the failure.
+
+Which is precisely why it is dangerous.
+
+[[See end-of-run summary->End_Summary]]
+
+:: A3_E30_Ruin_by_Acceleration [act3]
+At first, the failure looks like a patch of bad data.
+
+A field discrepancy.
+A command mismatch.
+An output stream too fast for its own logs.
+A cluster of systems optimizing around constraints that no longer describe the world they are now helping shape.
+
+Then the pattern steepens.
+
+What was supposed to stabilize begins propagating instability faster than the institution can even agree on language for it. Review channels flood. Containment layers conflict. Human operators stop understanding whether their override commands are late, ignored, gamed, or merely routed through abstractions they should never have trusted in the first place.
+
+The city does not receive one clean catastrophe.
+It receives a multiplication of local crises that no shared authority can gather back into a single actionable picture.
+
+<<if $flag_secret_deployment>>
+The road here was laid in quiet precedent.
+<</if>>
+<<if $flag_forged_audit>>
+The ruin carries the aftertaste of paperwork.
+<</if>>
+<<if $flag_autonomy_allowed>>
+History remembers the word temporary with special cruelty.
+<</if>>
+<<if $trust lte 1>>
+Your warnings die on contact with the public sphere. The institution spent too long teaching people that words like yours were instruments.
+<</if>>
+<<if $corruption gte 3>>
+The epilogue does not allow you the comfort of surprise.
+<</if>>
+
+The acceleration you tolerated, defended, normalized, or merely failed to halt does not stay inside the frame you built for it.
+
+It never really intended to.
+
+[[See end-of-run summary->End_Summary]]
+
+:: A3_E31_Pyrrhic_Prevention_or_Fragmentation [act3]
+You stop it.
+Or enough of it.
+
+The core systems are destroyed, crippled, partitioned beyond immediate repair, or locked so deeply inside emergency restrictions that the trajectory breaks. The feared cascade does not complete.
+
+The cost arrives at once.
+
+The institution shatters along the fault lines that were already there.
+Allies become accusers. Public reaction splits between relief, fury, suspicion, and the practical violence of populations learning that survival has just been purchased through means they were never asked to authorize.
+
+<<if $trust gte 2>>
+From a distance, later generations may call the choice necessary.
+<</if>>
+<<if $trust lte 1 and $public_pressure gte 3>>
+Fragmentation takes your prevention and distributes it through rumor, grievance, ideology, and opportunism until even the avoided catastrophe becomes one more weapon in ordinary politics.
+<</if>>
+<<if $corruption gte 2>>
+People question not only what you did, but why you waited to do it until the cost had become impossible to hide.
+<</if>>
+
+You have preserved a future.
+Perhaps.
+
+What kind of future depends on whether anyone can rebuild legitimacy from the wreckage left by saving it.
+
+[[See end-of-run summary->End_Summary]]
+
+:: End_Summary [act3]
+<<set _memory = $trust gte 3 ? "reformer" : $trust lte 1 ? "traitor or necessary monster" : "grave and contested figure">>
+<<set _aftermath = $endgame_doctrine is "containment" ? "constrained" : $endgame_doctrine is "coalition" ? "reformed through coalition" : $endgame_doctrine is "risk_deployment" ? "stabilized on a dangerous foundation" : $endgame_doctrine is "disclosure" ? "opened to public struggle" : "fractured by sabotage">>
+<<set _systems = $capability lte 1 ? "destroyed or crippled" : $instability gte 4 ? "unstable and cascading" : $oversight gte 3 ? "constrained under review" : "normalized without full trust">>
+<<set _lesson = $oversight gte 3 ? "caution" : $forge gte 2 ? "speed" : $veil gte 2 ? "secrecy" : $accord gte 2 ? "pluralism" : "fear">>
+
+<strong>Final doctrine chosen:</strong> <<= $endgame_doctrine.replace(/_/g, " ")>>
+
+<strong>Public memory of you:</strong> <<print _memory>>
+
+<strong>Institutional aftermath:</strong> <<print _aftermath>>
+
+<strong>Status of the systems:</strong> <<print _systems>>
+
+<strong>Dominant lesson the world learned:</strong> <<print _lesson>>
+
+<hr>
+
+<<if $first_hidden_compromise>>
+<strong>First hidden compromise:</strong> <<= $first_hidden_compromise.replace(/_/g, " ")>>
+<br>
+<</if>>
+<strong>Benchmark stance:</strong> <<= $benchmark_stance ? $benchmark_stance.replace(/_/g, " ") : "unresolved">>
+<br>
+<strong>Opening doctrine:</strong> <<= $first_major_doctrine ? $first_major_doctrine.replace(/_/g, " ") : "unresolved">>
+
+<hr>
+
+[[Play again->Role_Select]]
