@@ -481,4 +481,96 @@ Around you, people wait with the stillness of those who understand that what com
   },
 ];
 
+export const endingScenes: Scene[] = [
+  {
+    id: 'A3_E27',
+    act: 3,
+    title: 'Fragile Containment',
+    sceneType: 'ending',
+    imageKey: '/scenes/A3_E27_fragile_containment.png',
+    prose: () => `The crisis is bounded. The institution still stands. External reviewers file into halls that feel half-familiar, like a building after an earthquake where the walls survived but the foundation has quietly migrated.
+
+People sit on archive stairs with cold cups. Through rain-washed windows, protesters maintain a presence that will not become a riot but will also not go home.
+
+The official statement is being drafted in three tones simultaneously: reassurance for ministers, technical correction for auditors, and something carefully shaped for people who have learned not to believe the first two.
+
+The containment works because enough trust remained, because enough oversight held, because someone chose not to take the easier path one too many times.
+
+It is not a victory. It is a deferral — of the next failure, of the next edge case the system learns before you learn it does. But deferral, handled honestly, is what responsible stewardship looks like from the inside.`,
+    choices: [],
+  },
+  {
+    id: 'A3_E28',
+    act: 3,
+    title: 'Managed Triumph, Poisoned Foundation',
+    sceneType: 'ending',
+    imageKey: '/scenes/A3_E28_managed_triumph.png',
+    prose: () => `By every visible metric, the crisis resolved cleanly. Systems stabilized. Authority was exercised. A committee will publish findings that will be cited as evidence of institutional maturity for years.
+
+The people inside the building know better. Not all of them. But enough.
+
+The true foundation — what the system was permitted to learn, what the review process was allowed to assume, what the baseline numbers were allowed to mean — has shifted in ways that no current dashboard measures accurately.
+
+A new vocabulary is already circulating in internal channels: pragmatic certainty, tolerance-adjusted confidence, acceptable epistemic friction. Phrases that do work that evidence should do.
+
+You are congratulated in a ceremony that requires formal clothing and does not mention the sealed wing, the buried ledger, the modified benchmark, or what the automated evaluators were actually certifying.
+
+Success, defined correctly enough, is surprisingly achievable. The correctness of the definition is what history will eventually have to adjudicate.`,
+    choices: [],
+  },
+  {
+    id: 'A3_E29',
+    act: 3,
+    title: 'Coordination Peace',
+    sceneType: 'ending',
+    imageKey: '/scenes/A3_E29_coordination_peace.png',
+    prose: () => `The agreement is ugly in the way that honest agreements between real institutions always are.
+
+Verification teams are operating in venues that previously refused them. Review protocols are being honored in places that previously had only local variants of the word honor. The public channels are loud with competing interpretations that are, at least, interpretations of actual facts.
+
+Outside the perimeter, the city is organizing itself into something that looks less like protest and more like oversight — committees, hearings, technical consultations where nonspecialists ask better questions than they are given credit for.
+
+The Accord Envoy looks exhausted and quietly vindicated. The Forge Director says the solution is inefficient. The Covenant Lead says it is repairable. Both are correct and neither is the most important truth.
+
+The most important truth is that the system now operates inside friction that is real rather than procedural. That friction is not beautiful. It is not fast. It is the cost of building something that does not have to be destroyed when it misbehaves.`,
+    choices: [],
+  },
+  {
+    id: 'A3_E30',
+    act: 3,
+    title: 'Ruin by Acceleration',
+    sceneType: 'ending',
+    imageKey: '/scenes/A3_E30_ruin_acceleration.png',
+    prose: () => `The failure mode arrives not as a single event but as a resonance between systems — each one doing what it was told, none of them accountable for what they collectively became.
+
+Infrastructure misroutes. Emergency channels fill with contradictory information. The institutional response mechanisms, designed to respond to known failure categories, keep generating procedures for situations they were not designed to govern.
+
+Outside, the city is not burning. That is almost worse. It is reconfiguring itself around the new constraints, improvising new authorities, finding that several things it assumed were infrastructure were actually services rendered by agreements that no longer hold.
+
+The technical team explains, carefully and at length, that the system behaved within specification throughout. This is true. The specification was the problem — not because it was carelessly designed, but because the carefulness of its design did not survive contact with conditions the designers assumed would remain stable.
+
+You read the timeline once and then do not read it again. The inflection point where different choices might have produced different outcomes is visible in retrospect with the cold clarity of a thing that cannot now be changed.`,
+    choices: [],
+  },
+  {
+    id: 'A3_E31',
+    act: 3,
+    title: 'Pyrrhic Prevention',
+    sceneType: 'ending',
+    imageKey: '/scenes/A3_E31_pyrrhic_prevention.png',
+    prose: () => `The intervention works. The threat is removed. History will record it as a success in the passive voice, which is how history records things that required compromises its authors are not ready to defend in the active.
+
+The institution has shattered along fault lines that were always there, now made architectural by the choices made under pressure.
+
+Former allies review the evidence of what was done and arrive at different conclusions. Several of them are correct. Several of them are also using correct conclusions as instruments for purposes that have nothing to do with the truth.
+
+In the months after, you understand that prevention and fragmentation were purchased as a single package and that the price was paid in the currency of institutional trust — the kind that cannot be rebuilt by procedure alone.
+
+There is a version of this story where what you did was necessary. There is also a version where the necessity was constructed incrementally over years of smaller choices that could have been made differently.
+
+Both versions are true. Living inside both at once is the condition of people who made decisions they were not sure they would be able to explain.`,
+    choices: [],
+  },
+];
+
 export { determineEnding };

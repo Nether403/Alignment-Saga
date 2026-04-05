@@ -1,9 +1,9 @@
 import type { Scene, GameState } from '../types/game';
 import { act1Scenes } from './scenes/act1';
 import { act2Scenes } from './scenes/act2';
-import { act3Scenes } from './scenes/act3';
+import { act3Scenes, endingScenes } from './scenes/act3';
 
-const allScenes: Scene[] = [...act1Scenes, ...act2Scenes, ...act3Scenes];
+const allScenes: Scene[] = [...act1Scenes, ...act2Scenes, ...act3Scenes, ...endingScenes];
 
 const sceneMap: Record<string, Scene> = {};
 for (const scene of allScenes) {

@@ -13,10 +13,6 @@ const basePath = process.env.BASE_PATH || "/";
 
 export default defineConfig({
   base: basePath,
-  define: {
-    'import.meta.env.VITE_OPENAI_BASE_URL': JSON.stringify(process.env.AI_INTEGRATIONS_OPENAI_BASE_URL || ''),
-    'import.meta.env.VITE_OPENAI_API_KEY': JSON.stringify(process.env.AI_INTEGRATIONS_OPENAI_API_KEY || ''),
-  },
   plugins: [
     react(),
     tailwindcss(),

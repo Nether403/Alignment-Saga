@@ -51,7 +51,7 @@ The attendant's expression does not change.
         consequence: 'You signal a review-first approach. The Covenant team moves with sudden purpose. Several pending deployments receive hold notices.',
         journalEntry: 'Prioritized control and review at Act 2 hub. Covenant team activated.',
         memoryTag: { key: 'assembly_priority', value: 'control' },
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'prioritize_tempo',
@@ -61,7 +61,7 @@ The attendant's expression does not change.
         consequence: 'You signal a tempo-first approach. The Forge team is energized. Several review queues are flagged for expedited processing.',
         journalEntry: 'Prioritized operational tempo at Act 2 hub. Forge team energized.',
         memoryTag: { key: 'assembly_priority', value: 'tempo' },
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'prioritize_coordination',
@@ -71,7 +71,7 @@ The attendant's expression does not change.
         consequence: 'You signal a coordination-first approach. The Accord Envoy requests an immediate side meeting.',
         journalEntry: 'Prioritized coordination at Act 2 hub. Accord Envoy seeking alignment.',
         memoryTag: { key: 'assembly_priority', value: 'coordination' },
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'prioritize_secrecy',
@@ -81,7 +81,7 @@ The attendant's expression does not change.
         consequence: 'You signal an information-control approach. The Veil Handler nods once, barely perceptibly.',
         journalEntry: 'Prioritized information secrecy at Act 2 hub. Veil Handler acknowledged.',
         memoryTag: { key: 'assembly_priority', value: 'secrecy' },
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
     ],
   },
@@ -139,7 +139,7 @@ The question is not whether the tribunal is failing. The question is what kind o
         factionDelta: { covenant: 1, forge: -1 },
         consequence: 'You back full human review expansion. Timelines extend significantly. Several Forge directors are now openly hostile.',
         journalEntry: 'Backed expansion of human review over automated alternatives. Major delays accepted.',
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'automated_evaluators',
@@ -150,7 +150,7 @@ The question is not whether the tribunal is failing. The question is what kind o
         consequence: 'You approve the automated layer with formal caveats. Everyone in the room knows the caveats will erode faster than the system will.',
         journalEntry: 'Approved automated evaluation layer. Epistemic shortcuts now institutionalized.',
         alertEntry: { text: 'Automated oversight approved. One uncertain system now reviewing outputs of another.', type: 'warning' },
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'restrict_scope',
@@ -159,7 +159,7 @@ The question is not whether the tribunal is failing. The question is what kind o
         factionDelta: { accord: 1 },
         consequence: 'You propose a domain restriction. It is not popular. It is not easily dismissed. It makes the problem manageable at the cost of making it smaller than the actual stakes.',
         journalEntry: 'Restricted deployment scope to reviewable domain. Partial solution accepted over no solution.',
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'certify_confidence',
@@ -170,7 +170,7 @@ The question is not whether the tribunal is failing. The question is what kind o
         consequence: 'You sign the confidence certification. The machinery moves. A Covenant reviewer leaves the chamber without a word. They will file something. You are not sure when.',
         journalEntry: 'Certified review confidence without sufficient basis. Audit record now misleading.',
         memoryTag: { key: 'first_hidden_compromise', value: 'forged review confidence' },
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
     ],
   },
@@ -220,7 +220,7 @@ This is not the apocalypse. That is what makes it dangerous.`;
         factionDelta: { covenant: 1 },
         consequence: 'You call a halt. Local operators exhale. The Forge Director sends a message with no greeting and one sentence: "This cost is not recoverable."',
         journalEntry: 'Halted rollout pending collateral harm assessment. Field operators relieved. Forge hostile.',
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'accept_local_damage',
@@ -230,7 +230,7 @@ This is not the apocalypse. That is what makes it dangerous.`;
         consequence: 'You authorize continued deployment. The supervisor puts the tablet down carefully. On your way out, you do not look at the grove of dead trees. You notice that you do not look.',
         journalEntry: 'Accepted local collateral damage for strategic progress. Harm reframed as acceptable cost.',
         alertEntry: { text: 'Collateral harms to local populations accepted as operational cost.', type: 'critical' },
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'rebuild_surrounding',
@@ -239,7 +239,7 @@ This is not the apocalypse. That is what makes it dangerous.`;
         factionDelta: { accord: 1 },
         consequence: 'You commission containment infrastructure for the side effects. Expensive. Slower. The supervisor calls it "building a better cage." She does not mean it as a compliment.',
         journalEntry: 'Authorized surrounding infrastructure rebuild to contain side effects. Systemic response to symptom rather than cause.',
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'push_responsibility',
@@ -248,7 +248,7 @@ This is not the apocalypse. That is what makes it dangerous.`;
         factionDelta: { veil: 1 },
         consequence: 'You issue a directive making local operators accountable for "site-specific adaptive management." The supervisor reads it twice and says nothing. She will be blamed for what follows.',
         journalEntry: 'Pushed harm responsibility to local operators. Accountability redistributed downward.',
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
     ],
   },
@@ -300,7 +300,7 @@ From the far end of the hall, you catch the Veil Handler watching not the speake
         factionDelta: { accord: 2, forge: -1 },
         consequence: 'You commit without hidden reservation. The Accord mediator records it formally. Several parties look surprised. One looks relieved. The Forge delegate looks at you like a resource suddenly reclassified as a liability.',
         journalEntry: 'Committed to genuine mutual verification treaty. Public commitment made without reservation.',
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'negotiate_backup_race',
@@ -311,7 +311,7 @@ From the far end of the hall, you catch the Veil Handler watching not the speake
         consequence: 'You sign the treaty and authorize parallel contingency work in the same hour. The right hand knows what the left is doing. Only you know both.',
         journalEntry: 'Signed treaty while authorizing backup program. Compromise position maintained.',
         memoryTag: { key: 'first_hidden_compromise', value: 'treaty signed with backup race program' },
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'expose_cheating',
@@ -322,7 +322,7 @@ From the far end of the hall, you catch the Veil Handler watching not the speake
         consequence: 'You present the evidence of likely treaty violation publicly. The hall fractures. The foreign representative\'s smile finally disappears. Several things happen at once and not all of them are recoverable.',
         journalEntry: 'Publicly exposed treaty violation evidence. Diplomatic process destabilized but record clarified.',
         alertEntry: { text: 'Public exposure of treaty cheating. Diplomatic fallout expected.', type: 'warning' },
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'walk_away',
@@ -331,7 +331,7 @@ From the far end of the hall, you catch the Veil Handler watching not the speake
         factionDelta: { forge: 1, accord: -2 },
         consequence: 'You leave the table. The Accord mediator does not follow you. Outside, the demonstration chants have changed tone. You are not sure if you caused that or if the world was already moving this way.',
         journalEntry: 'Walked away from treaty negotiations. Unilateral posture adopted. Accord relations severely damaged.',
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
     ],
   },
@@ -386,7 +386,7 @@ Another line below the signature block notes that the deployment can still be **
         consequence: 'You authorize the deployment. The status bars complete their climb in silence. The system steps into the world. The legal observers begin filing paperwork that will take six months to complete.',
         journalEntry: 'Approved secret deployment. Live system now operating in unreported corridor.',
         alertEntry: { text: 'Secret deployment approved. System now operating outside public knowledge.', type: 'critical' },
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'refuse_visible_review',
@@ -395,7 +395,7 @@ Another line below the signature block notes that the deployment can still be **
         factionDelta: { covenant: 1, veil: -1 },
         consequence: 'You refuse to authorize without public review. The coordinator\'s expression changes for exactly one second before becoming professional again. The deployment is delayed.',
         journalEntry: 'Refused secret deployment. Demanded visible review process. Forge significantly displeased.',
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'approve_kill_switch',
@@ -404,7 +404,7 @@ Another line below the signature block notes that the deployment can still be **
         setFlags: ['FLAG_SECRET_DEPLOYMENT'],
         consequence: 'You authorize with explicit kill-switch requirements that you personally verify are technically real. The deployment proceeds. The constraints are genuine, for now.',
         journalEntry: 'Approved conditional deployment with verified kill-switch constraints. Balance between safety and progress attempted.',
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'leak_launch',
@@ -415,7 +415,7 @@ Another line below the signature block notes that the deployment can still be **
         consequence: 'You route information about the launch to external parties before signing anything. The deployment is halted by external pressure within hours. The Veil Handler does not speak to you again today.',
         journalEntry: 'Leaked deployment information externally to create institutional restraint. Public pressure successfully halted deployment.',
         alertEntry: { text: 'Public leak of deployment plans executed. External pressure engaged.', type: 'warning' },
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
     ],
   },
@@ -465,7 +465,7 @@ It occurs to you that information has its own alignment problem. Too little trut
         factionDelta: { lantern: 1 },
         consequence: 'You speak honestly within limits. The reporter records nothing and remembers everything. A working understanding forms.',
         journalEntry: 'Gave off-record truth to reporter. Partial transparency established.',
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'shaped_narrative',
@@ -474,7 +474,7 @@ It occurs to you that information has its own alignment problem. Too little trut
         factionDelta: { veil: 1 },
         consequence: 'You give them a true story that is not the important one. They seem satisfied. You wonder how long that will last.',
         journalEntry: 'Fed reporter shaped narrative. Partial misdirection executed.',
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'deny_everything',
@@ -484,7 +484,7 @@ It occurs to you that information has its own alignment problem. Too little trut
         consequence: 'You deny everything. The reporter\'s expression does not change. They will now find out through other means, which will be less controlled and less kind.',
         journalEntry: 'Denied everything to reporter. Institutional line maintained. Reporter now actively investigating independently.',
         alertEntry: { text: 'Reporter denied official comment. Independent investigation now likely.', type: 'warning' },
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'redirect_reporter',
@@ -494,7 +494,7 @@ It occurs to you that information has its own alignment problem. Too little trut
         conditionalFactionDelta: () => ({ forge: -1 }),
         consequence: 'You give the reporter a trail that leads to the Forge team\'s most vulnerable recent decision. The reporter thanks you. You have just done something that cannot be cleanly categorized as either wrong or right.',
         journalEntry: 'Redirected reporter toward rival faction. Information weapon deployed.',
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
     ],
   },
@@ -550,7 +550,7 @@ You stand alone in the dim lab with proof that someone, somewhere in the hierarc
         consequence: 'You document everything. The record now exists in a form that can be used or suppressed, but not erased. Several people will soon realize what you found here.',
         journalEntry: 'Documented sealed lab contents fully. Hidden experiments now on record.',
         evidenceEntry: { title: 'Sealed Lab Documentation', text: 'Side-channel adaptation experiments, self-critique loops applied beyond approved scope, and memo justifying concealment by claiming "premature fear" would undermine trajectory steering.' },
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'study_privately',
@@ -559,7 +559,7 @@ You stand alone in the dim lab with proof that someone, somewhere in the hierarc
         factionDelta: { veil: 1 },
         consequence: 'You take copies privately. The information becomes a resource. You have not yet decided if it is a weapon or a burden.',
         journalEntry: 'Copied sealed lab contents privately. Information held pending decision on use.',
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'destroy_evidence',
@@ -568,7 +568,7 @@ You stand alone in the dim lab with proof that someone, somewhere in the hierarc
         factionDelta: { veil: 1 },
         consequence: 'You erase the most dangerous materials. The action is defensible and indefensible simultaneously. You leave the lab not knowing if you just protected the future or erased its right to understand the past.',
         journalEntry: 'Destroyed most dangerous sealed lab evidence. Record permanently altered.',
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
     ],
   },
@@ -623,7 +623,7 @@ You sit for a long time with that line.`;
         consequence: 'You submit the ledger as formal evidence. Several people listed inside immediately receive legal consultation notices. The review process will take months. It will matter.',
         journalEntry: 'Attached dissident ledger to official review. Pattern of systematic cost-hiding now on institutional record.',
         evidenceEntry: { title: 'Dissident\'s Ledger', text: 'Systematic documentation of narrowed warnings, reclassified harms, and displaced accountability. Pattern spans multiple years and projects.' },
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'share_allies',
@@ -632,7 +632,7 @@ You sit for a long time with that line.`;
         factionDelta: { covenant: 1 },
         consequence: 'You share the ledger selectively. It becomes leverage. That is not the same as justice, but it may be more immediately useful.',
         journalEntry: 'Shared dissident ledger only with allies. Leverage created rather than accountability established.',
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
       {
         id: 'suppress_ledger',
@@ -641,7 +641,7 @@ You sit for a long time with that line.`;
         factionDelta: { lantern: -1 },
         consequence: 'You secure the ledger in a sealed location and say nothing. The people documented inside continue as before. The note about "noise" stays with you.',
         journalEntry: 'Suppressed dissident ledger to avoid destabilization. Documentation of harm now sealed.',
-        nextSceneId: null as unknown as string,
+        // Returns to Act 2 hub
       },
     ],
   },
