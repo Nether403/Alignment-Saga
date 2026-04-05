@@ -1,8 +1,32 @@
-import { Router } from "express";
+import { Router, type Request } from "express";
 
 const router = Router();
 
-router.post("/api/generate-ending-art", async (req, res) => {
+const WINDOW_MS = 60_000;
+const MAX_PER_WINDOW = 10;
+const ipHits = new Map<string, { count: number; resetAt: number }>();
+
+function isRateLimited(req: Request): boolean {
+  const ip = (req.headers["x-forwarded-for"] as string || req.socket.remoteAddress || "unknown").split(",")[0].trim();
+  const now = Date.now();
+  const entry = ipHits.get(ip);
+
+  if (!entry || now > entry.resetAt) {
+    ipHits.set(ip, { count: 1, resetAt: now + WINDOW_MS });
+    return false;
+  }
+
+  entry.count += 1;
+  if (entry.count > MAX_PER_WINDOW) return true;
+  return false;
+}
+
+router.post("/generate-ending-art", async (req, res) => {
+  if (isRateLimited(req)) {
+    res.status(429).json({ error: "Too many requests" });
+    return;
+  }
+
   const { prompt } = req.body as { prompt?: string };
 
   if (!prompt || typeof prompt !== "string" || prompt.length > 2000) {
@@ -48,7 +72,7 @@ router.post("/api/generate-ending-art", async (req, res) => {
     }
 
     res.json({ b64_json: b64 });
-  } catch (err) {
+  } catch {
     res.status(500).json({ error: "Generation failed" });
   }
 });
