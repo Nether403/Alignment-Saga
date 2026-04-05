@@ -1,0 +1,224 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "Si5iCYx4cQlYsm3MbHHMj"
+uri = "file://artifacts/alignment-game/public/scenes/A1_S01_signal_under_glass.png"
+type = "image"
+title = "signal under glass scene"
+
+[[generated]]
+id = "D9Az6rpBf5ZVqapQhe959"
+uri = "file://artifacts/alignment-game/public/scenes/A1_S02_threshold_archive.png"
+type = "image"
+title = "threshold archive rotunda"
+
+[[generated]]
+id = "IYvbYFLVF6TpbDfIpvwWO"
+uri = "file://artifacts/alignment-game/public/scenes/A1_S03_first_council.png"
+type = "image"
+title = "first council chamber"
+
+[[generated]]
+id = "OIxEYyJH_yKjpw6McmV9u"
+uri = "file://artifacts/alignment-game/public/scenes/A1_B04_technical_inquiry.png"
+type = "image"
+title = "technical inquiry diagnostics"
+
+[[generated]]
+id = "ZoSES1kBlpk-9NH7vHCN-"
+uri = "file://artifacts/alignment-game/public/scenes/A1_B05_political_inquiry.png"
+type = "image"
+title = "political inquiry witness corridor"
+
+[[generated]]
+id = "3tDutYZpzn65cwUTzV7KX"
+uri = "file://artifacts/alignment-game/public/scenes/A1_O06_private_warning.png"
+type = "image"
+title = "private warning mentor gallery"
+
+[[generated]]
+id = "JOLENAzyg9k1ONwv1jacn"
+uri = "file://artifacts/alignment-game/public/scenes/A1_S07_benchmark_chapel.png"
+type = "image"
+title = "benchmark chapel sacred chamber"
+
+[[generated]]
+id = "2UKUeRzUhMEodjfx1SpSF"
+uri = "file://artifacts/alignment-game/public/scenes/A1_B08_protect_whistleblower.png"
+type = "image"
+title = "whistleblower records vault"
+
+[[generated]]
+id = "mu4sxCjTZ4ftL0IJCPLe-"
+uri = "file://artifacts/alignment-game/public/scenes/A1_B09_bury_anomaly.png"
+type = "image"
+title = "bury anomaly executive office"
+
+[[generated]]
+id = "h2M0WOBUtbLRnnpz_M8c8"
+uri = "file://artifacts/alignment-game/public/scenes/A1_S10_first_commitment.png"
+type = "image"
+title = "first irreversible commitment night"
+
+[[generated]]
+id = "X0zxZOKJZUSFYVWNeGhSq"
+uri = "file://artifacts/alignment-game/public/scenes/A2_S11_return_archive.png"
+type = "image"
+title = "return to archive compressed"
+
+[[generated]]
+id = "_7-RZdeDnDG_tNFRJQ08z"
+uri = "file://artifacts/alignment-game/public/scenes/A2_B12_oversight_tribunal.png"
+type = "image"
+title = "oversight tribunal chamber"
+
+[[generated]]
+id = "ON2Y5xIilyCer6207Z4mM"
+uri = "file://artifacts/alignment-game/public/scenes/A2_B13_garden_side_effects.png"
+type = "image"
+title = "garden of side effects field"
+
+[[generated]]
+id = "tcMbAon4Q7dWs8ttdop_E"
+uri = "file://artifacts/alignment-game/public/scenes/A2_B14_treaty_lamps_knives.png"
+type = "image"
+title = "treaty negotiation hall"
+
+[[generated]]
+id = "ugOtIYummmpWIIqEYcifP"
+uri = "file://artifacts/alignment-game/public/scenes/A2_B15_quiet_launch.png"
+type = "image"
+title = "quiet launch operations annex"
+
+[[generated]]
+id = "iZqa3EUpUtQaE--SaSB0Z"
+uri = "file://artifacts/alignment-game/public/scenes/A2_O16_reporter_gate.png"
+type = "image"
+title = "reporter coffee shop meeting"
+
+[[generated]]
+id = "3OaMO3bOqP2JXQSq1IKYI"
+uri = "file://artifacts/alignment-game/public/scenes/A2_O17_sealed_lab.png"
+type = "image"
+title = "sealed lab wing dark"
+
+[[generated]]
+id = "Pb9pC25NlQ5G1dh0HC7QQ"
+uri = "file://artifacts/alignment-game/public/scenes/A2_O18_dissident_ledger.png"
+type = "image"
+title = "dissident ledger side office"
+
+[[generated]]
+id = "gRK8o8zsilKqrT_qf-HcY"
+uri = "file://artifacts/alignment-game/public/scenes/A2_S19_false_success.png"
+type = "image"
+title = "false success revelation theater"
+
+[[generated]]
+id = "GgxrE0Hyl7IwTy9zXuE8E"
+uri = "file://artifacts/alignment-game/public/scenes/A2_B20_automated_judgment.png"
+type = "image"
+title = "automated judgment demonstration"
+
+[[generated]]
+id = "0Evl9UW5rl_c2gBmnTRCL"
+uri = "file://artifacts/alignment-game/public/scenes/A2_B21_internal_schism.png"
+type = "image"
+title = "internal schism corridor"
+
+[[generated]]
+id = "Ajc1sjwZsRudKEZXkyOHo"
+uri = "file://artifacts/alignment-game/public/scenes/A2_S22_threshold_event.png"
+type = "image"
+title = "threshold event crisis rotunda"
+
+[[generated]]
+id = "7keJgV0notyTjrG9lOQ8D"
+uri = "file://artifacts/alignment-game/public/scenes/A3_C23_crisis_assembly.png"
+type = "image"
+title = "crisis assembly emergency rotunda"
+
+[[generated]]
+id = "-EpnBNIdmZPsZlnRtKDK9"
+uri = "file://artifacts/alignment-game/public/scenes/A3_C24_resource_ally_check.png"
+type = "image"
+title = "resource ally check chamber"
+
+[[generated]]
+id = "a6sXmiMUTSNKjWrjCPhKp"
+uri = "file://artifacts/alignment-game/public/scenes/A3_B25_emergency_measure.png"
+type = "image"
+title = "emergency measure final doctrine"
+
+[[generated]]
+id = "Z3Dc371xM1gJuLDchFcDl"
+uri = "file://artifacts/alignment-game/public/scenes/A3_B26_last_gate.png"
+type = "image"
+title = "last gate final corridor"
+
+[[generated]]
+id = "Wxno_8dx673klhUYuNdxP"
+uri = "file://artifacts/alignment-game/public/scenes/A3_E27_fragile_containment.png"
+type = "image"
+title = "fragile containment aftermath dawn"
+
+[[generated]]
+id = "LKUv0QPaKRiK3lSIW3hlI"
+uri = "file://artifacts/alignment-game/public/scenes/A3_E28_managed_triumph.png"
+type = "image"
+title = "managed triumph false foundation"
+
+[[generated]]
+id = "MUzGXXLnCkc6qPQflnD8d"
+uri = "file://artifacts/alignment-game/public/scenes/A3_E29_coordination_peace.png"
+type = "image"
+title = "coordination peace public legitimacy"
+
+[[generated]]
+id = "xZUbzuXVbmjYO4caQlzN8"
+uri = "file://artifacts/alignment-game/public/scenes/A3_E30_ruin_acceleration.png"
+type = "image"
+title = "ruin by acceleration cascade"
+
+[[generated]]
+id = "0u6rZbAWhAagPduh-QspC"
+uri = "file://artifacts/alignment-game/public/scenes/A3_E31_pyrrhic_prevention.png"
+type = "image"
+title = "pyrrhic prevention fragmentation"
+
+[[generated]]
+id = "jFUuPPrlIH_nzzqiuj4bX"
+uri = "file://artifacts/alignment-game/public/factions/faction_forge.png"
+type = "image"
+title = "forge faction portrait"
+
+[[generated]]
+id = "6hxhspOIiVGnswI_ttGyN"
+uri = "file://artifacts/alignment-game/public/factions/faction_covenant.png"
+type = "image"
+title = "covenant faction portrait"
+
+[[generated]]
+id = "vRcDpzNXvjZx3Ya6wa6Py"
+uri = "file://artifacts/alignment-game/public/factions/faction_accord.png"
+type = "image"
+title = "accord faction portrait"
+
+[[generated]]
+id = "mQwKtA4L4EgzNPSmd16uo"
+uri = "file://artifacts/alignment-game/public/factions/faction_veil.png"
+type = "image"
+title = "veil faction portrait"
+
+[[generated]]
+id = "fp0065bZOX57bBWedRhs7"
+uri = "file://artifacts/alignment-game/public/factions/faction_lantern.png"
+type = "image"
+title = "lantern faction portrait"
+
+[[generated]]
+id = "RWbam_z5KkZTkJ5-n2Xem"
+uri = "file://artifacts/alignment-game/public/title_screen.png"
+type = "image"
+title = "title screen institution night"
