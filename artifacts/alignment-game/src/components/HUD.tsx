@@ -6,6 +6,8 @@ interface HUDProps {
   onJournalClick: () => void;
   onEvidenceClick: () => void;
   onAlertsClick: () => void;
+  onARIAClick: () => void;
+  onDossierClick: () => void;
 }
 
 const STAT_LABELS: Record<string, { label: string; short: string; color: string; desc: string }> = {
@@ -89,14 +91,14 @@ function FactionScore({ label, value, color }: { label: string; value: number; c
   );
 }
 
-export function HUD({ state, onJournalClick, onEvidenceClick, onAlertsClick }: HUDProps) {
+export function HUD({ state, onJournalClick, onEvidenceClick, onAlertsClick, onARIAClick, onDossierClick }: HUDProps) {
   const { vars, factions, journal, evidence, alerts, act } = state;
   const unresolvedAlerts = alerts.filter(a => a.type !== 'info').length;
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <>
-      {/* DESKTOP SIDEBAR: hidden on mobile, visible on md+ */}
+      {/* DESKTOP SIDEBAR */}
       <aside className="hidden md:flex w-64 shrink-0 flex-col gap-3 p-3 bg-stone-950 border-r border-stone-800 overflow-y-auto">
         <div className="text-center py-2 border-b border-stone-800">
           <span className="text-xs font-mono text-stone-500 uppercase tracking-widest">
@@ -155,6 +157,22 @@ export function HUD({ state, onJournalClick, onEvidenceClick, onAlertsClick }: H
           </button>
         </div>
 
+        {/* ARIA + Dossier */}
+        <div className="border-t border-stone-800 pt-3 flex flex-col gap-2">
+          <button
+            onClick={onARIAClick}
+            className="flex items-center justify-center gap-2 px-3 py-2 bg-amber-950/30 hover:bg-amber-950/60 border border-amber-800/50 hover:border-amber-600 rounded text-xs font-mono transition-colors"
+          >
+            <span className="text-amber-400 uppercase tracking-widest">Ask ARIA</span>
+          </button>
+          <button
+            onClick={onDossierClick}
+            className="flex items-center justify-center gap-2 px-3 py-2 bg-stone-900 hover:bg-stone-800 border border-stone-700 rounded text-xs font-mono transition-colors"
+          >
+            <span className="text-stone-400 hover:text-stone-200 uppercase tracking-widest">Dossier</span>
+          </button>
+        </div>
+
         <div className="border-t border-stone-800 pt-3 text-center">
           <span className="text-xs font-mono text-stone-600 uppercase tracking-widest">
             {state.role || 'Unknown'} operative
@@ -162,9 +180,8 @@ export function HUD({ state, onJournalClick, onEvidenceClick, onAlertsClick }: H
         </div>
       </aside>
 
-      {/* MOBILE BOTTOM BAR + DRAWER: visible on mobile, hidden on md+ */}
+      {/* MOBILE BOTTOM BAR + DRAWER */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40">
-        {/* Drawer panel (slides up when open) */}
         {mobileOpen && (
           <div className="bg-stone-950 border-t border-stone-800 p-4 max-h-[60vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-3">
@@ -196,12 +213,27 @@ export function HUD({ state, onJournalClick, onEvidenceClick, onAlertsClick }: H
                 />
               ))}
             </div>
+
+            {/* ARIA + Dossier in mobile drawer */}
+            <div className="border-t border-stone-800 pt-3 flex gap-2">
+              <button
+                onClick={() => { setMobileOpen(false); onARIAClick(); }}
+                className="flex-1 px-3 py-2 bg-amber-950/30 border border-amber-800/50 text-amber-400 font-mono text-xs uppercase tracking-widest transition-colors"
+              >
+                Ask ARIA
+              </button>
+              <button
+                onClick={() => { setMobileOpen(false); onDossierClick(); }}
+                className="flex-1 px-3 py-2 bg-stone-900 border border-stone-700 text-stone-400 font-mono text-xs uppercase tracking-widest transition-colors"
+              >
+                Dossier
+              </button>
+            </div>
           </div>
         )}
 
         {/* Bottom tab bar */}
         <div className="bg-stone-950 border-t border-stone-800 flex items-center">
-          {/* Mini stats strip */}
           <button
             onClick={() => setMobileOpen(v => !v)}
             className="flex-1 flex items-center gap-2 px-3 py-2 overflow-x-auto"
@@ -217,7 +249,6 @@ export function HUD({ state, onJournalClick, onEvidenceClick, onAlertsClick }: H
             ))}
           </button>
 
-          {/* Tab buttons */}
           <div className="flex items-stretch border-l border-stone-800">
             <button
               onClick={onJournalClick}

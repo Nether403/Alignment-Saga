@@ -9,6 +9,7 @@ import { TitleScreen } from './components/TitleScreen';
 import { StoryBriefingScreen } from './components/StoryBriefingScreen';
 import { RoleSelectScreen } from './components/RoleSelectScreen';
 import { HowToPlayScreen } from './components/HowToPlayScreen';
+import { DossierScreen } from './components/DossierScreen';
 import { GameScene } from './components/GameScene';
 import { HUD } from './components/HUD';
 import { ConsequenceModal } from './components/ConsequenceModal';
@@ -16,12 +17,14 @@ import { PanelOverlay } from './components/PanelOverlay';
 import { Act2Hub } from './components/Act2Hub';
 import { EndingScreen } from './components/EndingScreen';
 import { TutorialOverlay, shouldShowTutorial } from './components/TutorialOverlay';
+import { ARIAPanel } from './components/ARIAPanel';
 
 const SAVE_KEY = 'alignment_game_save_v2';
 
 type UIPhase =
   | 'title'
   | 'how_to_play'
+  | 'dossier'
   | 'story_briefing'
   | 'role_select'
   | 'playing'
@@ -41,11 +44,13 @@ function hasSaveGame(): boolean {
 
 export default function App() {
   const [uiPhase, setUiPhase] = useState<UIPhase>('title');
+  const [dossierOrigin, setDossierOrigin] = useState<UIPhase>('title');
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [openPanel, setOpenPanel] = useState<'journal' | 'evidence' | 'alerts' | null>(null);
   const [act2DirectScene, setAct2DirectScene] = useState<string | null>(null);
   const [skipAnim, setSkipAnim] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [showAria, setShowAria] = useState(false);
   const [saveExists, setSaveExists] = useState(hasSaveGame);
 
   // Persist state
@@ -78,7 +83,6 @@ export default function App() {
         }
       }
     } catch {}
-    // New game — go to story briefing first
     setUiPhase('story_briefing');
   }, []);
 
@@ -89,14 +93,19 @@ export default function App() {
     setAct2DirectScene(null);
     setSkipAnim(false);
     setShowTutorial(false);
+    setShowAria(false);
     setUiPhase('story_briefing');
+  }, []);
+
+  const handleOpenDossier = useCallback((from: UIPhase) => {
+    setDossierOrigin(from);
+    setUiPhase('dossier');
   }, []);
 
   const handleRoleSelect = useCallback((role: Role) => {
     const initialState = createInitialState(role);
     setGameState(initialState);
     setAct2DirectScene(null);
-    // Show tutorial only for first-time players
     const firstRun = shouldShowTutorial();
     setShowTutorial(firstRun);
     setUiPhase('playing');
@@ -141,6 +150,7 @@ export default function App() {
     setAct2DirectScene(null);
     setSkipAnim(false);
     setShowTutorial(false);
+    setShowAria(false);
     setUiPhase('title');
   }, []);
 
@@ -165,6 +175,11 @@ export default function App() {
     ? canProceedToRevelation(gameState)
     : false;
 
+  // Build ARIA scene context string
+  const ariaSceneContext = gameState
+    ? `Act ${gameState.act}, scene: ${currentScene?.title || gameState.currentSceneId}`
+    : undefined;
+
   // --- Render ---
 
   if (uiPhase === 'title') {
@@ -174,6 +189,7 @@ export default function App() {
           onStart={handleStart}
           onNewGame={handleNewGame}
           onHowToPlay={() => setUiPhase('how_to_play')}
+          onDossier={() => handleOpenDossier('title')}
           hasSave={saveExists}
         />
       </div>
@@ -184,6 +200,14 @@ export default function App() {
     return (
       <div className="w-screen h-screen bg-stone-950 overflow-hidden">
         <HowToPlayScreen onBack={() => setUiPhase('title')} />
+      </div>
+    );
+  }
+
+  if (uiPhase === 'dossier') {
+    return (
+      <div className="w-screen h-screen bg-stone-950 overflow-hidden">
+        <DossierScreen onBack={() => setUiPhase(dossierOrigin)} />
       </div>
     );
   }
@@ -228,6 +252,8 @@ export default function App() {
         onJournalClick={() => setOpenPanel('journal')}
         onEvidenceClick={() => setOpenPanel('evidence')}
         onAlertsClick={() => setOpenPanel('alerts')}
+        onARIAClick={() => { setShowAria(v => !v); setOpenPanel(null); }}
+        onDossierClick={() => handleOpenDossier('playing')}
       />
 
       {/* Main area */}
@@ -317,6 +343,14 @@ export default function App() {
         {/* Tutorial overlay — only on first run */}
         {showTutorial && uiPhase === 'playing' && (
           <TutorialOverlay onComplete={() => setShowTutorial(false)} />
+        )}
+
+        {/* ARIA panel — slides in over the scene */}
+        {showAria && (
+          <ARIAPanel
+            sceneContext={ariaSceneContext}
+            onClose={() => setShowAria(false)}
+          />
         )}
       </main>
 

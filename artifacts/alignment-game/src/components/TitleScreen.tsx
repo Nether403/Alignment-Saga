@@ -4,6 +4,7 @@ interface TitleScreenProps {
   onStart: () => void;
   onNewGame: () => void;
   onHowToPlay: () => void;
+  onDossier: () => void;
   hasSave: boolean;
 }
 
@@ -121,7 +122,7 @@ function AboutOverlay({ onClose }: { onClose: () => void }) {
   );
 }
 
-export function TitleScreen({ onStart, onNewGame, onHowToPlay, hasSave }: TitleScreenProps) {
+export function TitleScreen({ onStart, onNewGame, onHowToPlay, onDossier, hasSave }: TitleScreenProps) {
   const [phase, setPhase] = useState<'intro' | 'menu'>('intro');
   const [visibleLines, setVisibleLines] = useState<number>(0);
   const [showAbout, setShowAbout] = useState(false);
@@ -246,6 +247,13 @@ export function TitleScreen({ onStart, onNewGame, onHowToPlay, hasSave }: TitleS
             className="px-10 py-2 border border-stone-700 text-stone-500 hover:border-stone-500 hover:text-stone-300 font-mono text-xs uppercase tracking-[0.3em] transition-all duration-300 w-48"
           >
             How to Play
+          </button>
+
+          <button
+            onClick={onDossier}
+            className="px-10 py-2 border border-stone-700 text-stone-500 hover:border-stone-500 hover:text-stone-300 font-mono text-xs uppercase tracking-[0.3em] transition-all duration-300 w-48"
+          >
+            Dossier
           </button>
 
           <button
