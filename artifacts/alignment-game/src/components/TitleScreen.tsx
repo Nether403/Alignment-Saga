@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 interface TitleScreenProps {
   onStart: () => void;
+  onNewGame: () => void;
   onHowToPlay: () => void;
   hasSave: boolean;
 }
@@ -14,10 +15,9 @@ const INTRO_LINES = [
   { text: 'One hour ago, the Director sent for you.', delay: 4600 },
 ];
 
-export function TitleScreen({ onStart, onHowToPlay, hasSave }: TitleScreenProps) {
+export function TitleScreen({ onStart, onNewGame, onHowToPlay, hasSave }: TitleScreenProps) {
   const [phase, setPhase] = useState<'intro' | 'menu'>('intro');
   const [visibleLines, setVisibleLines] = useState<number>(0);
-  const [skipped, setSkipped] = useState(false);
 
   useEffect(() => {
     if (phase !== 'intro') return;
@@ -40,7 +40,6 @@ export function TitleScreen({ onStart, onHowToPlay, hasSave }: TitleScreenProps)
   }, [phase]);
 
   const handleSkip = () => {
-    setSkipped(true);
     setVisibleLines(INTRO_LINES.length);
     setPhase('menu');
   };
@@ -69,7 +68,7 @@ export function TitleScreen({ onStart, onHowToPlay, hasSave }: TitleScreenProps)
       <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/30 to-stone-950/70" />
 
       {/* Intro text sequence */}
-      {phase === 'intro' && !skipped && (
+      {phase === 'intro' && (
         <div className="relative z-10 w-full max-w-lg px-8 text-center">
           <div className="flex flex-col gap-3 mb-8">
             {INTRO_LINES.map((line, i) => (
@@ -128,10 +127,7 @@ export function TitleScreen({ onStart, onHowToPlay, hasSave }: TitleScreenProps)
 
           {hasSave && (
             <button
-              onClick={() => {
-                try { localStorage.removeItem('alignment_game_save_v2'); } catch {}
-                onStart();
-              }}
+              onClick={onNewGame}
               className="px-10 py-2 border border-stone-700 text-stone-500 hover:border-stone-500 hover:text-stone-300 font-mono text-xs uppercase tracking-[0.3em] transition-all duration-300 w-48"
             >
               New Game

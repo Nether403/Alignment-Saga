@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { TypewriterText } from './TypewriterText';
 
 interface StoryBriefingScreenProps {
   onContinue: () => void;
@@ -24,23 +25,19 @@ const BRIEFING_PARAGRAPHS = [
 ];
 
 export function StoryBriefingScreen({ onContinue }: StoryBriefingScreenProps) {
-  const [visibleCount, setVisibleCount] = useState(0);
-  const [ready, setReady] = useState(false);
+  const [currentPara, setCurrentPara] = useState(0);
+  const [allDone, setAllDone] = useState(false);
 
-  useEffect(() => {
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    BRIEFING_PARAGRAPHS.forEach((_, i) => {
-      const t = setTimeout(() => setVisibleCount(i + 1), i * 1200 + 300);
-      timers.push(t);
-    });
-    const readyTimer = setTimeout(() => setReady(true), BRIEFING_PARAGRAPHS.length * 1200 + 300);
-    timers.push(readyTimer);
-    return () => timers.forEach(clearTimeout);
-  }, []);
+  const handleParaComplete = () => {
+    if (currentPara < BRIEFING_PARAGRAPHS.length - 1) {
+      setCurrentPara(p => p + 1);
+    } else {
+      setAllDone(true);
+    }
+  };
 
   const handleSkip = () => {
-    setVisibleCount(BRIEFING_PARAGRAPHS.length);
-    setReady(true);
+    onContinue();
   };
 
   return (
@@ -55,7 +52,7 @@ export function StoryBriefingScreen({ onContinue }: StoryBriefingScreenProps) {
       />
 
       {/* Top bar */}
-      <div className="relative z-10 border-b border-stone-800 px-8 py-4 flex items-center justify-between">
+      <div className="relative z-10 border-b border-stone-800 px-8 py-4 flex items-center justify-between shrink-0">
         <div>
           <p className="text-xs font-mono tracking-[0.4em] text-stone-500 uppercase">Mission Briefing</p>
           <p className="text-stone-300 text-xs font-mono mt-0.5 opacity-60">Meridian Institute — Classified Archive</p>
@@ -71,42 +68,46 @@ export function StoryBriefingScreen({ onContinue }: StoryBriefingScreenProps) {
       {/* Content */}
       <div className="relative z-10 flex-1 overflow-y-auto px-8 py-8 max-w-2xl mx-auto w-full">
         <div className="flex flex-col gap-8">
-          {BRIEFING_PARAGRAPHS.map((para, i) => (
-            <div
-              key={i}
-              className="transition-all duration-700"
-              style={{
-                opacity: i < visibleCount ? 1 : 0,
-                transform: i < visibleCount ? 'translateY(0)' : 'translateY(12px)',
-              }}
-            >
-              <p className="text-xs font-mono tracking-[0.4em] text-amber-600 uppercase mb-3">
-                {para.label}
-              </p>
-              <p className="text-stone-300 text-sm leading-relaxed font-light">
-                {para.text}
-              </p>
-            </div>
-          ))}
+          {BRIEFING_PARAGRAPHS.map((para, i) => {
+            const isActive = i === currentPara;
+            const isPast = i < currentPara;
+            const visible = isPast || isActive;
+
+            if (!visible) return null;
+
+            return (
+              <div key={i}>
+                <p className="text-xs font-mono tracking-[0.4em] text-amber-600 uppercase mb-3">
+                  {para.label}
+                </p>
+                <TypewriterText
+                  text={para.text}
+                  speed={12}
+                  skipAnimation={isPast}
+                  onComplete={isActive ? handleParaComplete : undefined}
+                  className="text-stone-300 text-sm leading-relaxed font-light"
+                />
+              </div>
+            );
+          })}
         </div>
 
-        {/* Redacted line decoration */}
-        <div
-          className="mt-10 transition-all duration-700"
-          style={{ opacity: ready ? 1 : 0 }}
-        >
-          <div className="border-t border-stone-800 pt-6 text-center">
-            <p className="text-xs font-mono text-stone-600 uppercase tracking-widest mb-6">
-              ██████ — Authorization Level: OPERATIVE — ██████
-            </p>
-            <button
-              onClick={onContinue}
-              className="px-8 py-3 border border-amber-600 text-amber-400 hover:bg-amber-400 hover:text-stone-950 font-mono text-xs uppercase tracking-[0.3em] transition-all duration-300"
-            >
-              Continue to Role Selection →
-            </button>
+        {/* CTA */}
+        {allDone && (
+          <div className="mt-10">
+            <div className="border-t border-stone-800 pt-6 text-center">
+              <p className="text-xs font-mono text-stone-600 uppercase tracking-widest mb-6">
+                ██████ — Authorization Level: OPERATIVE — ██████
+              </p>
+              <button
+                onClick={onContinue}
+                className="px-8 py-3 border border-amber-600 text-amber-400 hover:bg-amber-400 hover:text-stone-950 font-mono text-xs uppercase tracking-[0.3em] transition-all duration-300"
+              >
+                Continue to Role Selection →
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

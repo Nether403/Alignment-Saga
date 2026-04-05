@@ -88,6 +88,7 @@ export default function App() {
     setGameState(null);
     setAct2DirectScene(null);
     setSkipAnim(false);
+    setShowTutorial(false);
     setUiPhase('story_briefing');
   }, []);
 
@@ -171,6 +172,7 @@ export default function App() {
       <div className="w-screen h-screen bg-stone-950 overflow-hidden">
         <TitleScreen
           onStart={handleStart}
+          onNewGame={handleNewGame}
           onHowToPlay={() => setUiPhase('how_to_play')}
           hasSave={saveExists}
         />
