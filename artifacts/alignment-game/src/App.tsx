@@ -184,8 +184,8 @@ export default function App() {
         onAlertsClick={() => setOpenPanel('alerts')}
       />
 
-      {/* Main area */}
-      <main className="flex-1 flex flex-col min-h-0 overflow-hidden relative">
+      {/* Main area — pb-16 on mobile for fixed bottom HUD bar */}
+      <main className="flex-1 flex flex-col min-h-0 overflow-hidden relative pb-16 md:pb-0">
         {/* Consequence modal */}
         {uiPhase === 'consequence' && gameState.lastConsequenceText && (
           <ConsequenceModal
