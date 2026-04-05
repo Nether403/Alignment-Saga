@@ -86,27 +86,24 @@ export function ARIAPanel({ sceneContext, onClose }: ARIAPanelProps) {
           const payload = trimmed.slice(6);
           if (payload === '[DONE]') continue;
 
+          let parsed: { content?: string; error?: string };
           try {
-            const parsed = JSON.parse(payload) as { content?: string; error?: string };
-            if (parsed.error) throw new Error(parsed.error);
-            if (parsed.content) {
-              accumulated += parsed.content;
-              const snap = accumulated;
-              setMessages(prev => {
-                const next = [...prev];
-                const last = next[next.length - 1];
-                if (last?.role === 'aria') {
-                  next[next.length - 1] = { ...last, content: snap, streaming: true };
-                }
-                return next;
-              });
-            }
-          } catch (parseErr) {
-            if ((parseErr as Error).message !== 'Failed to execute...') {
-              // Propagate real errors from parsed.error
-              const msg = (parseErr as Error).message;
-              if (!msg.startsWith('JSON')) throw parseErr;
-            }
+            parsed = JSON.parse(payload) as { content?: string; error?: string };
+          } catch {
+            continue;
+          }
+          if (parsed.error) throw new Error(parsed.error);
+          if (parsed.content) {
+            accumulated += parsed.content;
+            const snap = accumulated;
+            setMessages(prev => {
+              const next = [...prev];
+              const last = next[next.length - 1];
+              if (last?.role === 'aria') {
+                next[next.length - 1] = { ...last, content: snap, streaming: true };
+              }
+              return next;
+            });
           }
         }
       }
@@ -160,13 +157,6 @@ export function ARIAPanel({ sceneContext, onClose }: ARIAPanelProps) {
           [close]
         </button>
       </div>
-
-      {/* Context indicator */}
-      {sceneContext && (
-        <div className="px-4 py-1.5 border-b border-stone-800/50 bg-stone-900/40 shrink-0">
-          <p className="text-xs font-mono text-stone-600 truncate">Context: {sceneContext}</p>
-        </div>
-      )}
 
       {/* Messages */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-4">
