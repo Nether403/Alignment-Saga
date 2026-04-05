@@ -29,6 +29,9 @@ export function ARIAPanel({ sceneContext, onClose }: ARIAPanelProps) {
 
   useEffect(() => {
     inputRef.current?.focus();
+    return () => {
+      abortRef.current?.abort();
+    };
   }, []);
 
   useEffect(() => {
@@ -143,7 +146,7 @@ export function ARIAPanel({ sceneContext, onClose }: ARIAPanelProps) {
   };
 
   return (
-    <div className="absolute inset-y-0 right-0 z-40 flex flex-col w-full max-w-sm border-l border-stone-800 bg-stone-950 shadow-2xl">
+    <div className="animate-slide-in-right absolute inset-y-0 right-0 z-40 flex flex-col w-full max-w-sm border-l border-stone-800 bg-stone-950 shadow-2xl">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-stone-800 shrink-0">
         <div>
