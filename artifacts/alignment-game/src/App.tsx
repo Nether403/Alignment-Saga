@@ -25,18 +25,6 @@ export default function App() {
   const [act2DirectScene, setAct2DirectScene] = useState<string | null>(null);
   const [skipAnim, setSkipAnim] = useState(false);
 
-  // Load save on mount
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(SAVE_KEY);
-      if (saved) {
-        const parsed: GameState = JSON.parse(saved);
-        if (parsed && parsed.role) {
-          // Has a valid save
-        }
-      }
-    } catch {}
-  }, []);
 
   // Persist state
   useEffect(() => {
