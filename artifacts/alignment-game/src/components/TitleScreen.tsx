@@ -15,9 +15,116 @@ const INTRO_LINES = [
   { text: 'One hour ago, the Director sent for you.', delay: 4600 },
 ];
 
+const CREATOR_LINKS = [
+  { label: 'nether101.nl', href: 'https://nether101.nl' },
+  { label: 'processoergosum.info', href: 'https://processoergosum.info' },
+  { label: 'witnessprotocol.info', href: 'https://witnessprotocol.info' },
+  { label: 'stackstudio.pro', href: 'https://stackstudio.pro' },
+];
+
+const CREATOR_SOCIAL = [
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/mvd101/', icon: 'in' },
+  { label: 'X / Twitter', href: 'https://x.com/martinus62326', icon: '𝕏' },
+  { label: 'GitHub', href: 'https://github.com/Nether403', icon: 'gh' },
+];
+
+function AboutOverlay({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="absolute inset-0 z-50 flex items-center justify-center">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-stone-950/80 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      {/* Card */}
+      <div className="relative z-10 bg-stone-900 border border-stone-700 max-w-sm w-full mx-6 shadow-2xl">
+        {/* Header */}
+        <div className="border-b border-stone-800 px-6 py-4 flex items-center justify-between">
+          <p className="text-xs font-mono tracking-[0.4em] text-stone-500 uppercase">About the Creator</p>
+          <button
+            onClick={onClose}
+            className="text-stone-600 hover:text-stone-300 font-mono text-xs transition-colors"
+          >
+            [close]
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="px-6 py-5 flex flex-col gap-5">
+          {/* Identity */}
+          <div>
+            <p className="text-stone-100 font-mono text-sm tracking-wider uppercase mb-0.5">
+              Martin vanDeursen
+            </p>
+            <p className="text-amber-500 text-xs font-light mb-1">AI Alignment Researcher</p>
+            <p className="text-stone-400 text-xs font-mono">The Witness Protocol · Realm101</p>
+            <p className="text-stone-500 text-xs font-mono mt-0.5">Amsterdam, Netherlands</p>
+            <a
+              href="mailto:martin@realm101.com"
+              className="text-stone-500 hover:text-amber-400 text-xs font-mono transition-colors mt-1 inline-block"
+            >
+              martin@realm101.com
+            </a>
+          </div>
+
+          {/* Websites */}
+          <div>
+            <p className="text-xs font-mono tracking-[0.3em] text-stone-600 uppercase mb-2">
+              Websites
+            </p>
+            <div className="flex flex-col gap-1">
+              {CREATOR_LINKS.map(link => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-stone-400 hover:text-amber-400 text-xs font-mono transition-colors"
+                >
+                  ↗ {link.label}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Social */}
+          <div>
+            <p className="text-xs font-mono tracking-[0.3em] text-stone-600 uppercase mb-2">
+              Social
+            </p>
+            <div className="flex gap-3">
+              {CREATOR_SOCIAL.map(s => (
+                <a
+                  key={s.href}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 border border-stone-700 text-stone-400 hover:border-amber-700 hover:text-amber-400 font-mono text-xs uppercase tracking-widest transition-all duration-200"
+                  title={s.label}
+                >
+                  {s.icon}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="border-t border-stone-800 px-6 py-3">
+          <p className="text-stone-700 text-xs font-mono text-center">
+            Built with care for the alignment problem
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function TitleScreen({ onStart, onNewGame, onHowToPlay, hasSave }: TitleScreenProps) {
   const [phase, setPhase] = useState<'intro' | 'menu'>('intro');
   const [visibleLines, setVisibleLines] = useState<number>(0);
+  const [showAbout, setShowAbout] = useState(false);
 
   useEffect(() => {
     if (phase !== 'intro') return;
@@ -140,12 +247,22 @@ export function TitleScreen({ onStart, onNewGame, onHowToPlay, hasSave }: TitleS
           >
             How to Play
           </button>
+
+          <button
+            onClick={() => setShowAbout(true)}
+            className="px-10 py-2 border border-stone-800 text-stone-600 hover:border-stone-600 hover:text-stone-400 font-mono text-xs uppercase tracking-[0.3em] transition-all duration-300 w-48"
+          >
+            About
+          </button>
         </div>
 
         <p className="text-stone-700 text-xs mt-10 font-mono">
           Inspired by the work of Eliezer Yudkowsky and the broader AI safety research community
         </p>
       </div>
+
+      {/* About overlay */}
+      {showAbout && <AboutOverlay onClose={() => setShowAbout(false)} />}
     </div>
   );
 }
